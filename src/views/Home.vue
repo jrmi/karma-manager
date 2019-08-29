@@ -1,18 +1,24 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div class="home" v-if="storyContent">
+    <Story :storyContent="storyContent" />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import Story from "@/components/Story.vue";
+import storyContent from "@/story.ink";
+
+console.log(storyContent);
 
 export default {
   name: "home",
   components: {
-    HelloWorld
-  }
+    Story
+  },
+  data() {
+    return { storyContent: storyContent };
+  },
+  created() {}
 };
 </script>

@@ -6,12 +6,15 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "story": "mono $HOME'/Applications/inklecate_windows_and_linux/inklecate.exe' -c -o public/story.json ./story.ink"
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "inkjs": "^1.10.2",
     "register-service-worker": "^1.6.2",
     "vue": "^2.6.10",
+    "vue-reactive-store": "0.0.17",
     "vue-router": "^3.0.3"
   },
   "devDependencies": {
@@ -29,6 +32,8 @@
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-vue": "^5.0.0",
     "prettier": "^1.18.2",
+    "shell-loader": "^1.1.2",
+    "temp": "^0.9.0",
     "vue-template-compiler": "^2.6.10"
   }
 }
