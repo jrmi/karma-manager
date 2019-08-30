@@ -1,6 +1,5 @@
 <template>
   <div class="story">
-    {{state.currentVariables}}
     <div v-for="(line, index) in state.currentLines" :key="line">
       <transition appear appear-class="show">
         <p v-html="line" :style="{'transition-delay': (index)*500 + 'ms'}"></p>
@@ -13,8 +12,13 @@
     </ul>
     <div v-if="state.currentChoices.length == 0">
       <h2>The end</h2>
-      <a href="#" @click.prevent="restart">Restart</a>
     </div>
+    <hr />
+    <div>
+      {{state.currentTags}}
+      {{state.currentVariables}}
+    </div>
+    <a href="#" @click.prevent="restart">Restart</a>
   </div>
 </template>
 
@@ -55,16 +59,25 @@ export default {
 
 .story {
   display: block;
-  max-width: 500px;
+  max-width: 50vw;
   margin: 0 auto;
   padding: 20px;
   text-align: justify;
   font-family: "Open Sans", sans-serif;
+  color: #ddd;
+}
+
+h1,
+h2 {
+  text-align: center;
+  font-family: "Quattrocento", Georgia, "Times New Roman", Times, serif;
+  margin: 0;
+  padding: 0;
 }
 
 p,
 a {
-  color: #333;
+  color: #ddd;
   line-height: 1.7em;
   font-size: 13pt;
 }
@@ -86,7 +99,7 @@ a {
   text-decoration: none;
 }
 a:hover {
-  color: black;
+  color: white;
 }
 
 .choices {
@@ -95,10 +108,12 @@ a:hover {
   justify-content: space-around;
   flex-wrap: wrap;
   padding-top: 2em;
-  border-top: 1px solid #555;
+  border-top: 1px solid #ddd;
+  padding: 0.5em 0.2em;
+  margin: 0px;
 }
 .choices a {
-  border: 1px solid #111;
+  border: 1px solid #ddd;
   padding: 10px;
   margin: 5px 0px;
   border-radius: 3px;

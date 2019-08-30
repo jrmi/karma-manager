@@ -18,16 +18,16 @@ module.exports = function(source) {
       });
       fs.close(info.fd, function() {
         const tempFile = temp.path();
-        exec(`${cmd} -o ${tempFile} ${info.path} && cat ${tempFile}`, function(
-          err,
-          stdout
-        ) {
-          if (err) {
-            console.log(err);
+        exec(
+          `${cmd} -c -o ${tempFile} ${info.path} && cat ${tempFile}`,
+          function(err, stdout) {
+            if (err) {
+              console.log(err);
+            }
+            const result = `export default ${stdout.trim()}`;
+            done(null, result);
           }
-          const result = `export default ${stdout.trim()}`;
-          done(null, result);
-        });
+        );
       });
     }
   });

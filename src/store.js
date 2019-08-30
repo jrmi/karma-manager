@@ -4,12 +4,28 @@ import { Story } from 'inkjs';
 
 let story = null;
 
+export const getGlobalVars = variablesState => {
+  const result = {};
+  variablesState._globalVariables.forEach((valueObj, key) => {
+    result[key] = valueObj.value;
+  });
+  return result;
+};
+
+export const getTags = tags =>
+  tags.reduce(
+    (acc, tag) => ({ ...acc, [tag.split(': ')[0]]: tag.split(': ')[1] }),
+    {}
+  );
+
 const store = {
   state: {
     currentLines: [],
     currentChoices: [],
     storyLoaded: false,
-    currentVariables: [],
+    currentVariables: {},
+    currentTags: [],
+    currentStory: {},
     data: null
   },
   computed: {
@@ -24,6 +40,7 @@ const store = {
   actions: {
     async loadStory(storyContent) {
       if (!store.state.storyLoaded) {
+        store.state.currentStory = storyContent;
         story = new Story(storyContent);
         await store.actions.loadNextLines();
         store.state.storyLoaded = true;
@@ -32,9 +49,11 @@ const store = {
     async loadNextLines() {
       if (story.canContinue) {
         const nextLines = [];
+        let currentTags = [];
         while (story.canContinue) {
           // Get ink to generate the next paragraph
           nextLines.push(story.Continue());
+          currentTags = currentTags.concat(story.currentTags);
         }
         store.state.currentLines = nextLines;
 
@@ -42,6 +61,11 @@ const store = {
           const { text, index } = choice;
           return { text, index };
         });
+
+        // Get variable values
+        store.state.currentVariables = getGlobalVars(story.variablesState);
+        // Get current tags
+        store.state.currentTags = currentTags;
       }
     },
     async chooseChoice(index) {
@@ -49,7 +73,10 @@ const store = {
       await store.actions.loadNextLines();
     },
     async resetStory() {
-      story.ResetState();
+      store.state.storyLoaded = false;
+      store.state.currentTags = [];
+      store.state.currentVariables = {};
+      await store.actions.loadStory(store.state.currentStory);
       await store.actions.loadNextLines();
     }
   },
@@ -57,7 +84,7 @@ const store = {
     {
       actions: {
         after(storeName, actionName, storeState) {
-          console.log('action is finished, this is my store : ', storeState);
+          console.log('Action is finished, this is my store: ', storeState);
         }
       }
     }
