@@ -11,10 +11,10 @@
       </li>
     </ul>
     <div v-if="state.currentChoices.length == 0">
-      <h2>The end</h2>
+      <h2>Fin</h2>
     </div>
     <hr />
-    <div>
+    <div class="hidden">
       {{state.currentTags}}
       {{state.currentVariables}}
     </div>
@@ -79,7 +79,7 @@ p,
 a {
   color: #ddd;
   line-height: 1.7em;
-  font-size: 13pt;
+  font-size: 16pt;
 }
 
 p {
@@ -118,6 +118,10 @@ a:hover {
   margin: 5px 0px;
   border-radius: 3px;
   display: block;
+}
+
+.hidden {
+  display: none;
 }
 </style>
 
