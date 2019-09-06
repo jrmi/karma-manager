@@ -52,8 +52,11 @@ const store = {
         let currentTags = [];
         while (story.canContinue) {
           // Get ink to generate the next paragraph
-          nextLines.push(story.Continue());
-          currentTags = currentTags.concat(story.currentTags);
+          nextLines.push({
+            line: story.Continue(),
+            tags: getTags(story.currentTags)
+          });
+          //currentTags = currentTags.concat(story.currentTags);
         }
         store.state.currentLines = nextLines;
 
@@ -65,7 +68,7 @@ const store = {
         // Get variable values
         store.state.currentVariables = getGlobalVars(story.variablesState);
         // Get current tags
-        store.state.currentTags = currentTags;
+        //store.state.currentTags = getTags(currentTags);
       }
     },
     async chooseChoice(index) {

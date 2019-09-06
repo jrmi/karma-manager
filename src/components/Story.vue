@@ -1,24 +1,35 @@
 <template>
   <div class="story">
-    <div v-for="(line, index) in state.currentLines" :key="line">
-      <transition appear appear-class="show">
-        <p v-html="line" :style="{'transition-delay': (index)*500 + 'ms'}"></p>
-      </transition>
-    </div>
-    <ul class="choices" v-if="state.currentChoices.length > 0">
-      <li v-for="choice in state.currentChoices" :key="choice.index">
-        <a href="#" @click="handleChoice(choice.index)" v-html="choice.text"></a>
-      </li>
-    </ul>
-    <div v-if="state.currentChoices.length == 0">
-      <h2>Fin</h2>
-    </div>
-    <hr />
-    <div class="hidden">
-      {{state.currentTags}}
-      {{state.currentVariables}}
-    </div>
-    <a href="#" @click.prevent="restart">Restart</a>
+    <article>
+      <div v-for="(line, index) in state.currentLines" :key="line.line">
+        <p
+          v-html="line.line"
+          sstyle="{'transition-delay': line.tags.wait || index * 200 + 'ms'}"
+          :style="{'animation-delay': index * 200 + 'ms'}"
+          :class="[line.tags.class||''].concat(['text-focus-in'])"
+        ></p>
+        <transition appear appear-class="sshow"></transition>
+      </div>
+      <ul class="choices" v-if="state.currentChoices.length > 0">
+        <li v-for="choice in state.currentChoices" :key="choice.index">
+          <!--a href="#" @click="handleChoice(choice.index)" v-html="choice.text"></a-->
+          <a href="#" class="choice grow" @click="handleChoice(choice.index)" v-html="choice.text"></a>
+        </li>
+      </ul>
+      <div v-if="state.currentChoices.length == 0">
+        <h2>Fin</h2>
+      </div>
+    </article>
+    <aside>
+      <p>Gain : {{state.currentVariables['money']}} €</p>
+      <div class="hidden">
+        {{state.currentTags}}
+        {{state.currentVariables}}
+      </div>
+      <p>
+        <a href="#" @click.prevent="restart">Restart</a>
+      </p>
+    </aside>
   </div>
 </template>
 
@@ -48,6 +59,9 @@ export default {
     async restart() {
       //await store.actions.loadStory(storyContent);
       await store.actions.resetStory();
+    },
+    test() {
+      console.log("end");
     }
   }
 };
@@ -55,16 +69,29 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,700|Quattrocento:700");
-
 .story {
   display: block;
-  max-width: 50vw;
+  max-width: 60vw;
   margin: 0 auto;
   padding: 20px;
-  text-align: justify;
-  font-family: "Open Sans", sans-serif;
   color: #ddd;
+  font-size: 16pt;
+  font-family: "Gentium Book Basic", serif;
+  display: flex;
+  justify-content: space-between;
+}
+
+aside {
+  background-color: #151515;
+  padding: 0.5em;
+  flex-basis: 20%;
+  flex-shrink: 0;
+}
+
+article {
+  text-align: justify;
+  padding: 0em 2em;
+  flex-grow: 1;
 }
 
 h1,
@@ -76,52 +103,135 @@ h2 {
 }
 
 p,
-a {
-  color: #ddd;
+a,
+button {
   line-height: 1.7em;
-  font-size: 16pt;
 }
 
 p {
-  opacity: 1;
-  transition: opacity 1500ms;
+  /*opacity: 1;
+  transition: opacity 1500ms;*/
+  margin: 0.5em 0em;
 }
 
 p.show {
   opacity: 0;
 }
 
-p.choice {
-  text-align: center;
-}
-
 a {
   text-decoration: none;
+  border: 1px solid #ddd;
+  padding: 0.25em 0.5em;
+  margin: 5px 0px;
+  border-radius: 3px;
+  color: #eee;
 }
 a:hover {
-  color: white;
+  color: rgb(218, 126, 126);
+  border-color: rgb(218, 126, 126);
 }
 
 .choices {
   list-style-type: none;
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
+  align-items: center;
   flex-wrap: wrap;
   padding-top: 2em;
-  border-top: 1px solid #ddd;
   padding: 0.5em 0.2em;
   margin: 0px;
-}
-.choices a {
-  border: 1px solid #ddd;
-  padding: 10px;
-  margin: 5px 0px;
-  border-radius: 3px;
-  display: block;
+  border-top: 1px solid #222;
+  margin-top: 2em;
 }
 
 .hidden {
   display: none;
+}
+
+.choice {
+  color: #fc2f70;
+  padding: 0.2em 0.5em;
+  outline: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  background-color: transparent;
+  display: block;
+}
+
+.choice:hover {
+  color: #ff4b84;
+}
+
+.underline {
+  z-index: 1;
+  position: relative;
+  color: #fc2f70;
+  padding: 0.3em 0.5em;
+  outline: none;
+  border: none;
+  overflow: hidden;
+  transition: color 0.4s ease-in-out;
+}
+
+.underline {
+  position: relative;
+}
+
+.underline::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #fc2f70;
+  transform-origin: center;
+  transform: translate(-50%, 0) scaleX(0);
+  transition: transform 1s ease-out;
+}
+
+.underline:hover::before {
+  transform: translate(-50%, 0) scaleX(1);
+}
+
+.text-focus-in {
+  animation: text-focus-in 500ms cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+}
+
+.grow {
+  transition: all 0.2s ease-in-out;
+}
+
+.grow:hover {
+  /*transform: scale(1.1);*/
+  text-shadow: 1px 0px 20px #fc2f70;
+}
+
+@-webkit-keyframes text-focus-in {
+  0% {
+    -webkit-filter: blur(12px);
+    filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-filter: blur(0px);
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+@keyframes text-focus-in {
+  0% {
+    -webkit-filter: blur(12px);
+    filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-filter: blur(0px);
+    filter: blur(0px);
+    opacity: 1;
+  }
 }
 </style>
 

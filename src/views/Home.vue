@@ -23,10 +23,12 @@ export default {
 
 <style >
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,700|Quattrocento:700");
+@import url("https://fonts.googleapis.com/css?family=Goudy+Bookletter+1911&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Gentium+Book+Basic&display=swap");
 
 body {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Gentium Book Basic", serif;
   font-weight: lighter;
-  background: #222;
+  background: #191919;
 }
 </style>
