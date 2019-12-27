@@ -39,24 +39,22 @@ const store = {
   },
   actions: {
     async loadStory(storyContent) {
-      if (!store.state.storyLoaded) {
-        store.state.currentStory = storyContent;
-        story = new Story(storyContent);
-        await store.actions.loadNextLines();
-        store.state.storyLoaded = true;
-      }
+      //if (!store.state.storyLoaded) {
+      store.state.currentStory = storyContent;
+      story = new Story(storyContent);
+      await store.actions.loadNextLines();
+      store.state.storyLoaded = true;
+      //}
     },
     async loadNextLines() {
       if (story.canContinue) {
         const nextLines = [];
-        let currentTags = [];
         while (story.canContinue) {
           // Get ink to generate the next paragraph
           nextLines.push({
             line: story.Continue(),
             tags: getTags(story.currentTags)
           });
-          //currentTags = currentTags.concat(story.currentTags);
         }
         store.state.currentLines = nextLines;
 
@@ -67,12 +65,15 @@ const store = {
 
         // Get variable values
         store.state.currentVariables = getGlobalVars(story.variablesState);
-        // Get current tags
-        //store.state.currentTags = getTags(currentTags);
       }
     },
     async chooseChoice(index) {
       story.ChooseChoiceIndex(index);
+      await store.actions.loadNextLines();
+    },
+    async goto(path) {
+      story.state.callStack.Push(0, this.evaluationStack.length); // Push type tunnel
+      story.ChoosePathString(path);
       await store.actions.loadNextLines();
     },
     async resetStory() {

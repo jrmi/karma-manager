@@ -5,15 +5,20 @@
         <p
           v-html="line.line"
           sstyle="{'transition-delay': line.tags.wait || index * 200 + 'ms'}"
-          :style="{'animation-delay': index * 200 + 'ms'}"
-          :class="[line.tags.class||''].concat(['text-focus-in'])"
+          :style="{ 'animation-delay': index * 200 + 'ms' }"
+          :class="[line.tags.class || ''].concat(['text-focus-in'])"
         ></p>
         <transition appear appear-class="sshow"></transition>
       </div>
       <ul class="choices" v-if="state.currentChoices.length > 0">
         <li v-for="choice in state.currentChoices" :key="choice.index">
           <!--a href="#" @click="handleChoice(choice.index)" v-html="choice.text"></a-->
-          <a href="#" class="choice grow" @click="handleChoice(choice.index)" v-html="choice.text"></a>
+          <a
+            href="#"
+            class="choice grow"
+            @click="handleChoice(choice.index)"
+            v-html="choice.text"
+          ></a>
         </li>
       </ul>
       <div v-if="state.currentChoices.length == 0">
@@ -21,23 +26,26 @@
       </div>
     </article>
     <aside>
-      <p>Gain : {{state.currentVariables['money']}} €</p>
+      <p>Gain : {{ state.currentVariables['money'] }} €</p>
       <div class="hidden">
-        {{state.currentTags}}
-        {{state.currentVariables}}
+        {{ state.currentTags }}
+        {{ state.currentVariables }}
       </div>
       <p>
         <a href="#" @click.prevent="restart">Restart</a>
       </p>
+      <!--p>
+        <a href="#" @click.prevent="talk">Talk to Arthur</a>
+      </p-->
     </aside>
   </div>
 </template>
 
 <script>
-import store from "@/store";
+import store from '@/store';
 
 export default {
-  name: "Story",
+  name: 'Story',
   props: {
     storyContent: Object
   },
@@ -60,8 +68,12 @@ export default {
       //await store.actions.loadStory(storyContent);
       await store.actions.resetStory();
     },
+    async talk() {
+      //await store.actions.loadStory(storyContent);
+      await store.actions.goto('arthur');
+    },
     test() {
-      console.log("end");
+      console.log('end');
     }
   }
 };
@@ -71,33 +83,46 @@ export default {
 <style scoped>
 .story {
   display: block;
-  max-width: 60vw;
+  max-width: 1024px;
+  /*width: 90vw;*/
   margin: 0 auto;
   padding: 20px;
   color: #ddd;
   font-size: 16pt;
-  font-family: "Gentium Book Basic", serif;
+  font-family: 'Gentium Book Basic', serif;
   display: flex;
   justify-content: space-between;
+}
+
+@media (max-width: 1024px) {
+  .story {
+    width: 100vw;
+  }
+}
+
+@media (max-width: 1024px) {
+  .story {
+    width: 100vw;
+  }
 }
 
 aside {
   background-color: #151515;
   padding: 0.5em;
-  flex-basis: 20%;
+  flex-basis: 30%;
   flex-shrink: 0;
 }
 
 article {
   text-align: justify;
-  padding: 0em 2em;
+  padding: 0em 1.5em;
   flex-grow: 1;
 }
 
 h1,
 h2 {
   text-align: center;
-  font-family: "Quattrocento", Georgia, "Times New Roman", Times, serif;
+  font-family: 'Quattrocento', Georgia, 'Times New Roman', Times, serif;
   margin: 0;
   padding: 0;
 }
@@ -105,13 +130,13 @@ h2 {
 p,
 a,
 button {
-  line-height: 1.7em;
+  line-height: 1.2em;
 }
 
 p {
   /*opacity: 1;
   transition: opacity 1500ms;*/
-  margin: 0.5em 0em;
+  margin: 1em 0em;
 }
 
 p.show {
@@ -180,7 +205,7 @@ a:hover {
 }
 
 .underline::before {
-  content: "";
+  content: '';
   position: absolute;
   left: 50%;
   bottom: 0;
@@ -197,7 +222,7 @@ a:hover {
 }
 
 .text-focus-in {
-  animation: text-focus-in 500ms cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+  animation: text-focus-in 200ms cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
 }
 
 .grow {
@@ -206,13 +231,13 @@ a:hover {
 
 .grow:hover {
   /*transform: scale(1.1);*/
-  text-shadow: 1px 0px 20px #fc2f70;
+  text-shadow: 1px 0px 10px #fc2f70;
 }
 
 @-webkit-keyframes text-focus-in {
   0% {
-    -webkit-filter: blur(12px);
-    filter: blur(12px);
+    -webkit-filter: blur(6px);
+    filter: blur(6px);
     opacity: 0;
   }
   100% {
@@ -223,8 +248,8 @@ a:hover {
 }
 @keyframes text-focus-in {
   0% {
-    -webkit-filter: blur(12px);
-    filter: blur(12px);
+    -webkit-filter: blur(6px);
+    filter: blur(6px);
     opacity: 0;
   }
   100% {
@@ -234,4 +259,3 @@ a:hover {
   }
 }
 </style>
-
