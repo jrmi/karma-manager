@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start": "npm run serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
-    "story": "mono $HOME'/Applications/inklecate_windows_and_linux/inklecate.exe' -c -o public/story.json ./story.ink"
+    "story": "mono $INKLECATE -c -o public/story.json ./src/story.ink"
   },
   "dependencies": {
     "core-js": "^2.6.5",
