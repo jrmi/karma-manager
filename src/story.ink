@@ -7,10 +7,27 @@ VAR age = 0
 VAR karma = 0
 VAR gender = "F"
 VAR name = "Noname"
+VAR start = 0
 
 LIST tags = yesprostitute, nothing
 
 -> intro
+
+== function alter(ref var_, val) ==
+  ~ var_ += val
+
+== function set(ref var_, val) ==
+  ~ var_ = val
+
+== function addTag(tag) ==
+  ~ tags += tag
+
+== function removeTag(tag) ==
+  ~ tags -= tag
+
+== function hasTag(tag) ==
+  ~ return tags ? tag
+
 
 == function getName() ==
   ~ temp tname = "{~Martin|Bernard|Thomas|Petit|Robert|Richard|Durand|Dubois|Moreau|Laurent|Simon|Michel|Lefebvre|Leroy|Roux|David|Bertrand|Morel|Fournier|Girard|Bonnet|Dupont|Lambert|Fontaine|Rousseau|Vincent|Muller|Lefevre|Faure|Andre|Mercier|Blanc|Guerin|Boyer|Garnier|Chevalier|Francois|Legrand|Gauthier|Garcia|Perrin|Robin|Clement|Morin|Nicolas|Henry|Roussel|Mathieu|Gautier|Masson|Marchand|Duval|Denis|Dumont|Marie|Lemaire|Noel|Meyer|Dufour|Meunier|Brun|Blanchard|Giraud|Joly|Riviere|Lucas|Brunet|Gaillard|Barbier|Arnaud|Martinez|Gerard|Roche|Renard|Schmitt|Roy|Leroux|Colin|Vidal|Caron|Picard|Roger|Fabre|Aubert|Lemoine|Renaud|Dumas|Lacroix|Olivier|Philippe|Bourgeois|Pierre|Benoit|Rey|Leclerc|Payet|Rolland|Leclercq|Guillaume|Lecomte|Lopez|Jean|Dupuy|Guillot|Hubert|Berger|Carpentier|Sanchez|Dupuis|Moulin|Louis|Deschamps|Huet|Vasseur|Perez|Boucher|Fleury|Royer|Klein|Jacquet|Adam|Paris|Poirier|Marty|Aubry|Guyot|Carre|Charles|Renault|Charpentier|Menard|Maillard|Baron|Bertin|Bailly|Herve|Schneider|Fernandez|Collet|Leger|Bouvier|Julien|Prevost|Millet|Perrot|Daniel|Cousin|Germain|Breton|Besson|Langlois|Remy|Pelletier|Leveque|Perrier|Leblanc|Barre|Lebrun|Marchal|Weber|Mallet|Hamon|Boulanger|Jacob|Monnier|Michaud|Rodriguez|Guichard|Gillet|Etienne|Grondin|Poulain|Tessier|Chevallier|Collin|Chauvin|Bouchet|Lemaitre|Benard|Marechal|Humbert|Reynaud|Antoine|Hoarau|Perret|Barthelemy|Cordier|Pichon|Lejeune|Gilbert|Lamy|Delaunay|Pasquier|Carlier|Laporte}"
@@ -57,12 +74,10 @@ LIST tags = yesprostitute, nothing
 
 == function hasEvent(currentAge) ==
 {
-  - currentAge < 1:
-    ~ return (RANDOM(1, 30) == 1)
-  - currentAge < 4:
-    ~ return (RANDOM(1, 20) == 1)
+  - currentAge < 10:
+    ~ return (RANDOM(1, 400) == 1)
   - currentAge < 14:
-    ~ return (RANDOM(1, 10) == 1)
+    ~ return (RANDOM(1, 40) == 1)
   - currentAge <= 24:
     ~ return (RANDOM(1, 10) == 1)
   - currentAge <= 24:
@@ -95,6 +110,31 @@ LIST tags = yesprostitute, nothing
     ~ return "sans aucun besoin"
 }
 
+
+== function descEducationParent(educ) ==
+{
+  - educ < 5:
+    ~ return "plutôt faible"
+  - educ < 15:
+    ~ return "habituelle"
+  - educ < 25:
+    ~ return "élevée"
+  - else:
+    ~ return "excellente"
+}
+
+== function descSupportParent(support_) ==
+{
+  - support_ < 5:
+    ~ return "peu attentifs à leurs enfants"
+  - support_ < 15:
+    ~ return "attentifs à leur famille"
+  - support_ < 25:
+    ~ return "très proches de leur famille"
+  - else:
+    ~ return "excessivement protecteurs avec leurs proches"
+}
+
 == function initCarac(ref rich_, ref education_, ref support_, point)==
 
 ~ temp carac = RANDOM(1,4)
@@ -113,6 +153,10 @@ LIST tags = yesprostitute, nothing
 }
 
 
+== function visited(divert) ==
+  ~ return TURNS_SINCE(divert) > 1 and TURNS_SINCE(divert) < (TURNS() - start)
+
+
 == intro ==
 
 Bienvenue dans votre gestionnaire d'incarnation.
@@ -120,22 +164,29 @@ Bienvenue dans votre gestionnaire d'incarnation.
 Bla bla bla
 
 * [Compris]
-  -> parentChoice
+  -> init
 
+
+== init ==
+
+~ age = 0
+~ tags = ()
+~ start = TURNS()
+
+-> parentChoice
 
 == parentChoice ==
 
-~ age = 0
 ~ rich = 0
 ~ education = 0
 ~ support = 0
-~ tags = ()
-
 ~ initCarac(rich, education, support, 30)
 
 Carac : ({rich}, {education}, {support})
 
-{getGirlName()} et {getBoyName()} {getName()} sont deux parents {descRichParent(rich)}
+{getGirlName()} et {getBoyName()} {getName()} sont deux parents {descRichParent(rich)}.
+<> Leur éducation est {descEducationParent(education)}. 
+<> Ils sont également {descSupportParent(support)}.
 
 Voulez-vous vous incarner dans cette famille ?
 
@@ -181,7 +232,11 @@ Vous naissez sous le nom de {name}.
 
 == event ==
 
-à l'age de {age} ans, {name} :
+à l'age de {age} ans,
+
+-> choiceAction
+
+= choiceAction
 
 {~ -> action|-> choice}
 
@@ -189,45 +244,266 @@ Vous naissez sous le nom de {name}.
 
 == action ==
 
-Fait quelque chose.
+{age < 17: -> event.choiceAction}
 
-+ [Super]
+~ temp c = RANDOM(1,5)
+
+{
+  - c == 1: -> ecology
+  - c == 2: -> politicAction
+  - c == 3: -> human
+  - c == 4: -> art
+  - c == 5: -> science
+}
+
+= endAction
+
++ [Ok]
   -> nextYear
+
+
+== ecology ==
+
+~ temp c = RANDOM(1,2)
+
+{
+  - c == 1: -> cleanOcean
+  - c == 2: -> lessGarbage
+}
+
+= cleanOcean
+
+{visited(-> cleanOcean): -> action}
+
+<> {name} organise une opération internationnale de nettoyage des océans.
+
+-> action.endAction
+
+= lessGarbage
+
+{visited(-> lessGarbage): -> action}
+
+<> {name} améliore des embalages afin de générer moins de déchets.
+
+-> action.endAction
+
+== politicAction ==
+
+~ temp c = RANDOM(1,2)
+
+{
+  - c == 1: -> peace
+  - c == 2: -> lawImmigration
+}
+
+= peace
+
+{visited(-> peace): -> action}
+
+<> {name} a rétablie la paix {~en Irak|en Iran|au Soudan|en Syrie|au Malie|au Pakistan}
+{alter(karma, 5)}
+
+-> action.endAction
+
+= lawImmigration
+
+{visited(-> lawImmigration): -> action}
+
+<> {name} a fait voter une Loi pour protéger les immigrés
+{alter(karma, 5)}
+
+
+-> action.endAction
+
+== human ==
+
+~ temp c = RANDOM(1,2)
+
+{
+  - c == 1: -> assos
+  - c == 2: -> mission
+}
+
+= assos
+
+{visited(-> assos): -> action}
+
+<> {name} a mis en place une association humanitaire pour {~sauver les enfants|soigner les femmes maltraitées}.
+
+-> action.endAction
+
+= mission
+
+{visited(-> mission): -> action}
+
+<> {name} anime un projet de création d'école pour enfants {~défavorisés|abandonnés|maltraités}.
+
+-> action.endAction
+
+== art ==
+
+~ temp c = RANDOM(1,2)
+
+{
+  - c == 1: -> paint
+  - c == 2: -> building
+}
+
+= paint
+
+{visited(-> paint): -> action}
+
+<> {name} a créé d'une oeuvre picturale révolutionnant le genre.
+
+-> action.endAction
+
+= building
+
+{visited(-> building): -> action}
+
+<> {name} a construit un immeuble en bois zéro carbonne.
+
+-> action.endAction
+
+== science ==
+
+~ temp c = RANDOM(1,2)
+
+{
+  - c == 1: -> medical
+  - c == 2: -> energy
+}
+
+= medical
+
+{visited(-> medical): -> action}
+
+<> {name} invente une nouvelle manière de soigner les infections sans utiliser d'anti-biotique
+
+-> action.endAction
+
+= energy
+
+{visited(-> energy): -> action}
+
+<> {name} conçoit une nouvelle manière de stocker l'energie qui permet de mieux utiliser les sources d'energies renouvelables.
+
+-> action.endAction
 
 
 /************** CHOICES *************/
 
 == choice ==
 
-~ temp c = RANDOM(1,2)
+~ temp c = RANDOM(1,8)
 
 {
   - c == 1: -> prostitute
   - c == 2: -> travel
+  - c == 3: -> delegate
+  - c == 4: -> mariage
+  - c == 5: -> child
+  - c == 6: -> extremGroup
+  - c == 7: -> politic
+  - c == 8: -> university
 }
+
+= university
+
+{age > 25 or age < 19: -> choice}
+
+<> on propose à {name} d'aller dans une école renomée.
+
++ [Ok]
++ [Non merci]
+
+- -> endEvent
+
+= politic
+
+{age < 22: -> choice}
+
+<> on propose à {name} de rejoindre le groupe politique "{~les humanistes solidaires|soyons ensembles|Ensemble et plus fort}".
+
++ [Ok]
++ [Non merci]
+
+- -> endEvent
+
+= extremGroup
+
+{age < 18: -> choice}
+
+<> on propose à {name} de rejoindre le groupe militant "{~les ecoloWarrior|sauvons les dauphins|brulons les pollueurs}".
+
++ [Ok]
++ [Non merci]
+
+- -> endEvent
+
+= child
+
+{age < 21: -> choice}
+
+<> {name} a la possiblité de faire un enfant.
+
++ [Ok (support + 5, richesse -5)] {alter(rich, -5)} {alter(support, 5)}
++ [Non merci]
+
+- -> endEvent
+
+= mariage
+
+{age < 20: -> choice}
+
+<> {name} a la possiblité de se marier.
+
++ [Ok (support + 5, richesse -5)] {alter(rich, -5)} {alter(support, 5)}
++ [Non merci]
+
+- -> endEvent
 
 = prostitute
 
-{tags ? yesprostitute: x -> choice}
+{age < 21: -> choice}
 
-On propose à {name} de se prostituer pour gagner plus d'argent.
+{tags ? yesprostitute: -> choice}
 
-+ [Ok (karma -10, richesse +10)]
-  ~ tags += (yesprostitute)
-  ~ karma -= 1
-  ~ rich += 10
-+ [Non Merci]
+<> on propose à {name} une "promotion canapé" pour gagner plus d'argent.
+
++ [Ok (karma -10, richesse +10)] {addTag(yesprostitute)} {alter(karma, -10)} {alter(rich, 10)}
++ [Non merci]
 
 - -> endEvent
 
 = travel
 
-Vous pouvez changer de pays.
+{age < 25: -> studyTravel}
 
-+ [Ok (support -5, richesse +5)]
-  ~ support -= 5
-  ~ rich += 5
-+ [Non Merci]
+<> {name} a la possiblité de changer de pays pour son travail.
+
++ [Ok (support -5, richesse +5)] {alter(support, -5)} {alter(rich, 5)}
++ [Non merci]
+
+- -> endEvent
+
+= studyTravel
+
+<> {name} a la possiblité de changer de pays pour ses études.
+
++ [Ok (support -3, education +3)] {alter(support, -3)} {alter(education, 3)}
++ [Non merci]
+
+- -> endEvent
+
+= delegate
+
+{age < 7 or age > 18: -> choice}
+
+<> {name} peut se présenter à l'élection des délégués.
+
++ [Ok (?)]
++ [Non merci]
 
 - -> endEvent
 
@@ -253,7 +529,7 @@ Votre incarnation est morte à l'age de {age} ans.
 Votre score
 
 + [Nouvelle incarnation]
-  -> parentChoice
+  -> init
 * [Quitter le cycle des ré-incarnations]
   -> END
 
