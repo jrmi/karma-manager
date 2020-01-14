@@ -4,6 +4,8 @@ import { Story } from 'inkjs';
 
 let story = null;
 
+let nextId = 0;
+
 export const getGlobalVars = variablesState => {
   const result = {};
   variablesState._globalVariables.forEach((valueObj, key) => {
@@ -26,6 +28,7 @@ const store = {
     currentVariables: {},
     currentTags: [],
     currentStory: {},
+    karma: 0,
     data: null
   },
   computed: {
@@ -40,8 +43,10 @@ const store = {
   actions: {
     async loadStory(storyContent) {
       //if (!store.state.storyLoaded) {
+      console.log(JSON.stringify(storyContent));
       store.state.currentStory = storyContent;
       story = new Story(storyContent);
+      story.state.variablesState.$('karma', store.state.karma);
       await store.actions.loadNextLines();
       store.state.storyLoaded = true;
       //}
@@ -53,7 +58,8 @@ const store = {
           // Get ink to generate the next paragraph
           nextLines.push({
             line: story.Continue(),
-            tags: getTags(story.currentTags)
+            tags: getTags(story.currentTags),
+            key: nextId++
           });
         }
         store.state.currentLines = nextLines;

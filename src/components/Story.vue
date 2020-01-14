@@ -1,10 +1,9 @@
 <template>
   <div class="story">
     <article>
-      <div v-for="(line, index) in state.currentLines" :key="line.line">
+      <div v-for="(line, index) in state.currentLines" :key="line.key">
         <p
           v-html="line.line"
-          sstyle="{'transition-delay': line.tags.wait || index * 200 + 'ms'}"
           :style="{ 'animation-delay': index * 200 + 'ms' }"
           :class="[line.tags.class || ''].concat(['text-focus-in'])"
         ></p>
@@ -13,39 +12,43 @@
       <ul class="choices" v-if="state.currentChoices.length > 0">
         <li v-for="choice in state.currentChoices" :key="choice.index">
           <!--a href="#" @click="handleChoice(choice.index)" v-html="choice.text"></a-->
-          <a
-            href="#"
-            class="choice grow"
-            @click="handleChoice(choice.index)"
-            v-html="choice.text"
-          ></a>
+          <a href="#" class="choice grow" @click="handleChoice(choice.index)" v-html="choice.text"></a>
         </li>
       </ul>
       <div v-if="state.currentChoices.length == 0">
-        <h2>Fin</h2>
+        <p>Vous avez terminé. Voulez vous ?</p>
+        <ul class="choices">
+          <li>
+            <a class="choice grow" href="#" @click.prevent="restart">Vous réincarner</a>
+          </li>
+          <li>
+            <a class="choice grow" href="#" @click.prevent="end">Quitter le cycle des réincarnations</a>
+          </li>
+        </ul>
       </div>
     </article>
     <aside>
-      <p>Gain : {{ state.currentVariables['money'] }} €</p>
-      <div class="hidden">
-        {{ state.currentTags }}
-        {{ state.currentVariables }}
-      </div>
+      <h2>Caractéristiques</h2>
       <p>
-        <a href="#" @click.prevent="restart">Restart</a>
+        Richesses : {{ state.currentVariables['rich'] }} %
+        <br />
+        Education : {{ state.currentVariables['education'] }} %
+        <br />
+        Support : {{ state.currentVariables['support'] }} %
+        <br />
+        Sagesse : {{ state.currentVariables['simplicity'] }} %
       </p>
-      <!--p>
-        <a href="#" @click.prevent="talk">Talk to Arthur</a>
-      </p-->
+      <p>Karma : {{ state.currentVariables['karma'] }}</p>
+      <a class="choice grow" href="#" @click.prevent="restart">Recommencer</a>
     </aside>
   </div>
 </template>
 
 <script>
-import store from '@/store';
+import store from "@/store";
 
 export default {
-  name: 'Story',
+  name: "Story",
   props: {
     storyContent: Object
   },
@@ -65,15 +68,18 @@ export default {
       await store.actions.chooseChoice(index);
     },
     async restart() {
-      //await store.actions.loadStory(storyContent);
+      store.state.karma = store.state.currentVariables["karma"];
       await store.actions.resetStory();
+    },
+    end() {
+      console.log("end");
     },
     async talk() {
       //await store.actions.loadStory(storyContent);
-      await store.actions.goto('arthur');
+      await store.actions.goto("arthur");
     },
     test() {
-      console.log('end');
+      console.log("end");
     }
   }
 };
@@ -89,7 +95,7 @@ export default {
   padding: 20px;
   color: #ddd;
   font-size: 16pt;
-  font-family: 'Gentium Book Basic', serif;
+  font-family: "Gentium Book Basic", serif;
   display: flex;
   justify-content: space-between;
 }
@@ -122,7 +128,7 @@ article {
 h1,
 h2 {
   text-align: center;
-  font-family: 'Quattrocento', Georgia, 'Times New Roman', Times, serif;
+  font-family: "Quattrocento", Georgia, "Times New Roman", Times, serif;
   margin: 0;
   padding: 0;
 }
@@ -205,7 +211,7 @@ a:hover {
 }
 
 .underline::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 50%;
   bottom: 0;

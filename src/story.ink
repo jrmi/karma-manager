@@ -1,17 +1,16 @@
-VAR f = true
-VAR money = 0
 VAR rich = 0
 VAR education = 0
 VAR support = 0
+VAR simplicity = 0
 VAR age = 0
 VAR karma = 0
 VAR gender = "F"
 VAR name = "Noname"
 VAR start = 0
 
-LIST tags = yesprostitute, nothing
+LIST tags = nothing
 
--> intro
+-> init
 
 == function alter(ref var_, val) ==
   ~ var_ += val
@@ -77,15 +76,15 @@ LIST tags = yesprostitute, nothing
   - currentAge < 10:
     ~ return (RANDOM(1, 400) == 1)
   - currentAge < 14:
-    ~ return (RANDOM(1, 40) == 1)
+    ~ return (RANDOM(1, 20) == 1)
   - currentAge <= 24:
-    ~ return (RANDOM(1, 10) == 1)
+    ~ return (RANDOM(1, 2) == 1)
   - currentAge <= 24:
-    ~ return (RANDOM(1, 10) == 1)
+    ~ return (RANDOM(1, 2) == 1)
   - currentAge <= 34:
-    ~ return (RANDOM(1, 10) == 1)
+    ~ return (RANDOM(1, 3) == 1)
   - currentAge <= 44:
-    ~ return (RANDOM(1, 10) == 1)
+    ~ return (RANDOM(1, 5) == 1)
   - currentAge <= 54:
     ~ return (RANDOM(1, 25) == 1)
   - currentAge <= 64:
@@ -103,7 +102,7 @@ LIST tags = yesprostitute, nothing
   - rich_ < 5:
     ~ return "ayant du mal a terminer les fin de mois"
   - rich_ < 15:
-    ~ return "sans histoire"
+    ~ return "de la classe moyenne"
   - rich_ < 25:
     ~ return "avec une bonne aisance materielle"
   - else:
@@ -135,37 +134,36 @@ LIST tags = yesprostitute, nothing
     ~ return "excessivement protecteurs avec leurs proches"
 }
 
-== function initCarac(ref rich_, ref education_, ref support_, point)==
+== function descSimplicityParent(support_) ==
+{
+  - support_ < 5:
+    ~ return "irrespectueux"
+  - support_ < 15:
+    ~ return "peu respecteux"
+  - support_ < 25:
+    ~ return "sages"
+  - else:
+    ~ return "très sages"
+}
+
+== function initCarac(ref rich_, ref education_, ref support_, ref simplicity_, remain) ==
 
 ~ temp carac = RANDOM(1,4)
+~ temp add = (RANDOM(1, remain / 2) + RANDOM(1, remain /2) + RANDOM(1, remain /2)) / 3
 
-{
-  - carac == 1:
-      ~ rich_ += RANDOM(1,3)
-  - carac == 2:
-      ~ education_ += RANDOM(1,3)
-  - carac == 3:
-      ~ support_ += RANDOM(1,3)
+{ shuffle:
+  - ~ rich_ += add
+  - ~ education_ += add
+  - ~ support_ += add
+  - ~ simplicity_ += add
 }
 
-{ point > 0:
-  ~ initCarac(rich_, education_, support_, point - 1)
+{ remain - add > 5:
+  ~ initCarac(rich_, education_, support_, simplicity_, remain - add)
 }
-
 
 == function visited(divert) ==
   ~ return TURNS_SINCE(divert) > 1 and TURNS_SINCE(divert) < (TURNS() - start)
-
-
-== intro ==
-
-Bienvenue dans votre gestionnaire d'incarnation.
-
-Bla bla bla
-
-* [Compris]
-  -> init
-
 
 == init ==
 
@@ -180,13 +178,13 @@ Bla bla bla
 ~ rich = 0
 ~ education = 0
 ~ support = 0
-~ initCarac(rich, education, support, 30)
-
-Carac : ({rich}, {education}, {support})
+~ simplicity = 0
+~ initCarac(rich, education, support, simplicity, 50 + karma)
 
 {getGirlName()} et {getBoyName()} {getName()} sont deux parents {descRichParent(rich)}.
 <> Leur éducation est {descEducationParent(education)}. 
-<> Ils sont également {descSupportParent(support)}.
+<> Ils sont {descSupportParent(support)}.
+<> De plus, ils sont {descSimplicityParent(simplicity)} avec les autres.
 
 Voulez-vous vous incarner dans cette famille ?
 
@@ -218,7 +216,6 @@ Vous naissez sous le nom de {name}.
 
 ~ age++
 
-
 { 
 - isDead(age):
     -> death
@@ -232,7 +229,6 @@ Vous naissez sous le nom de {name}.
 
 == event ==
 
-à l'age de {age} ans,
 
 -> choiceAction
 
@@ -244,19 +240,21 @@ Vous naissez sous le nom de {name}.
 
 == action ==
 
-{age < 17: -> event.choiceAction}
+action
 
-~ temp c = RANDOM(1,5)
+{age < 17: -> nextYear}
 
-{
-  - c == 1: -> ecology
-  - c == 2: -> politicAction
-  - c == 3: -> human
-  - c == 4: -> art
-  - c == 5: -> science
+{ shuffle:
+  - -> ecology
+  - -> politicAction
+  - -> human
+  - -> art
+  - -> science
 }
 
 = endAction
+
+{alter(karma, 5)}
 
 + [Ok]
   -> nextYear
@@ -264,26 +262,25 @@ Vous naissez sous le nom de {name}.
 
 == ecology ==
 
-~ temp c = RANDOM(1,2)
-
-{
-  - c == 1: -> cleanOcean
-  - c == 2: -> lessGarbage
+{ shuffle:
+  - -> cleanOcean
+  - -> lessGarbage
 }
 
 = cleanOcean
 
-{visited(-> cleanOcean): -> action}
+{RANDOM(1,(education+rich)/2) < 10: dommage -> nextYear}
 
-<> {name} organise une opération internationnale de nettoyage des océans.
+À l'age de {age} ans, {name} organise {|une nouvelle|pour la troisième fois} une opération <>
+{~internationnale|mondiale|générale} de nettoyage des océans {||et c'est un grand succès}.
 
 -> action.endAction
 
 = lessGarbage
 
-{visited(-> lessGarbage): -> action}
+{RANDOM(1,(education+support)/2) < 10: dommage -> nextYear}
 
-<> {name} améliore des embalages afin de générer moins de déchets.
+À l'age de {age} ans, {name} améliore {|encore plus|toujours plus} les embalages afin de générer moins de déchets.
 
 -> action.endAction
 
@@ -291,27 +288,32 @@ Vous naissez sous le nom de {name}.
 
 ~ temp c = RANDOM(1,2)
 
-{
-  - c == 1: -> peace
-  - c == 2: -> lawImmigration
+{ c:
+  - 1: -> peace
+  - 2: -> lawImmigration
 }
 
 = peace
 
-{visited(-> peace): -> action}
+{RANDOM(1,(education+simplicity)/2) < 10: dommage -> nextYear}
 
-<> {name} a rétablie la paix {~en Irak|en Iran|au Soudan|en Syrie|au Malie|au Pakistan}
-{alter(karma, 5)}
+À l'age de {age} ans, {name} fait signer un traité de paix {~en Irak|en Iran|au Soudan|en Syrie|au Malie|au Pakistan}.
 
 -> action.endAction
 
 = lawImmigration
 
-{visited(-> lawImmigration): -> action}
+{RANDOM(1,(education+simplicity)/2) < 10: dommage -> nextYear}
 
-<> {name} a fait voter une Loi pour protéger les immigrés
-{alter(karma, 5)}
-
+À l'age de {age} ans, {name} fait voter une nouvelle Loi pour protéger les <>
+{shuffle:
+  - immigrés
+  - femmes batues
+  - enfants battus
+  - personnes victimes de viols
+  - plus démunis
+  - manifestants des violences policières
+}
 
 -> action.endAction
 
@@ -319,49 +321,48 @@ Vous naissez sous le nom de {name}.
 
 ~ temp c = RANDOM(1,2)
 
-{
-  - c == 1: -> assos
-  - c == 2: -> mission
+{ c:
+  - 1: -> assos
+  - 2: -> mission
 }
 
 = assos
 
-{visited(-> assos): -> action}
+{RANDOM(1, simplicity) < 10: dommage -> nextYear}
 
-<> {name} a mis en place une association humanitaire pour {~sauver les enfants|soigner les femmes maltraitées}.
+À l'age de {age} ans, {name} met en place une association humanitaire pour <>
+{~sauver les enfants abandonnés|soigner les femmes maltraitées|aider les victimes de viols|accompagner les immigrés}.
 
 -> action.endAction
 
 = mission
 
-{visited(-> mission): -> action}
+{RANDOM(1, simplicity) < 10: dommage -> nextYear}
 
-<> {name} anime un projet de création d'école pour enfants {~défavorisés|abandonnés|maltraités}.
+À l'age de {age} ans, {name} anime un {|nouveau} projet de création d'école pour enfants {~défavorisés|abandonnés|maltraités|en difficultés}.
 
 -> action.endAction
 
 == art ==
 
-~ temp c = RANDOM(1,2)
-
-{
-  - c == 1: -> paint
-  - c == 2: -> building
+{ shuffle:
+  - -> paint
+  - -> building
 }
 
 = paint
 
-{visited(-> paint): -> action}
+{RANDOM(1, (support + education) / 2) < 10: dommage -> nextYear}
 
-<> {name} a créé d'une oeuvre picturale révolutionnant le genre.
+À l'age de {age} ans, {name} créé {|||encore} une {|nouvelle|série} oeuvre picturale {~révolutionnant le genre|d'un nouveau genre|exposée dans plusieurs musées}.
 
 -> action.endAction
 
 = building
 
-{visited(-> building): -> action}
+{RANDOM(1, (rich + education) / 2) < 10: dommage -> nextYear}
 
-<> {name} a construit un immeuble en bois zéro carbonne.
+À l'age de {age} ans, {name} fait construire {~un immeuble en bois zéro emission|une un parc éolien|un éco-village}.
 
 -> action.endAction
 
@@ -369,24 +370,29 @@ Vous naissez sous le nom de {name}.
 
 ~ temp c = RANDOM(1,2)
 
-{
-  - c == 1: -> medical
-  - c == 2: -> energy
+{ c:
+  - 1: -> medical
+  - 2: -> energy
 }
 
 = medical
 
-{visited(-> medical): -> action}
+{RANDOM(1, (simplicity + education) / 2) < 10: dommage -> nextYear}
 
-<> {name} invente une nouvelle manière de soigner les infections sans utiliser d'anti-biotique
+À l'age de {age} ans,  {name} invente <>
+{ shuffle:
+  - une nouvelle manière de soigner les infections sans utiliser d'anti-biotique
+  - une nouvelle thérapie contre le sida accessible aux pays emmergeants
+  - une manière de soulager les douleurs sans effets secondaires
+}
 
 -> action.endAction
 
 = energy
 
-{visited(-> energy): -> action}
+{RANDOM(1, education) < 10: dommage -> nextYear}
 
-<> {name} conçoit une nouvelle manière de stocker l'energie qui permet de mieux utiliser les sources d'energies renouvelables.
+À l'age de {age} ans, {name} conçoit une nouvelle manière de stocker l'energie qui permet de mieux utiliser les sources d'energies renouvelables.
 
 -> action.endAction
 
@@ -395,24 +401,24 @@ Vous naissez sous le nom de {name}.
 
 == choice ==
 
-~ temp c = RANDOM(1,8)
+choice
 
-{
-  - c == 1: -> prostitute
-  - c == 2: -> travel
-  - c == 3: -> delegate
-  - c == 4: -> mariage
-  - c == 5: -> child
-  - c == 6: -> extremGroup
-  - c == 7: -> politic
-  - c == 8: -> university
+{ shuffle: 
+  - -> prostitute
+  - -> travel
+  - -> delegate
+  - -> mariage
+  - -> child
+  - -> extremGroup
+  - -> politic
+  - -> university
 }
 
 = university
 
-{age > 25 or age < 19: -> choice}
+{age > 25 or age < 19: -> nextYear}
 
-<> on propose à {name} d'aller dans une école renomée.
+À l'age de {age} ans, on propose à {name} d'aller dans une école renomée.
 
 + [Ok]
 + [Non merci]
@@ -421,9 +427,9 @@ Vous naissez sous le nom de {name}.
 
 = politic
 
-{age < 22: -> choice}
+{age < 22: -> nextYear}
 
-<> on propose à {name} de rejoindre le groupe politique "{~les humanistes solidaires|soyons ensembles|Ensemble et plus fort}".
+À l'age de {age} ans, on propose à {name} de rejoindre le groupe politique "{~les humanistes solidaires|soyons ensembles|Ensemble et plus fort}".
 
 + [Ok]
 + [Non merci]
@@ -432,9 +438,9 @@ Vous naissez sous le nom de {name}.
 
 = extremGroup
 
-{age < 18: -> choice}
+{age < 18: -> nextYear}
 
-<> on propose à {name} de rejoindre le groupe militant "{~les ecoloWarrior|sauvons les dauphins|brulons les pollueurs}".
+À l'age de {age} ans, on propose à {name} de rejoindre le groupe militant "{~les ecoloWarrior|sauvons les dauphins|brulons les pollueurs}".
 
 + [Ok]
 + [Non merci]
@@ -443,9 +449,9 @@ Vous naissez sous le nom de {name}.
 
 = child
 
-{age < 21: -> choice}
+{age < 21: -> nextYear}
 
-<> {name} a la possiblité de faire un enfant.
+À l'age de {age} ans, {name} a la possiblité de faire un enfant.
 
 + [Ok (support + 5, richesse -5)] {alter(rich, -5)} {alter(support, 5)}
 + [Non merci]
@@ -454,9 +460,9 @@ Vous naissez sous le nom de {name}.
 
 = mariage
 
-{age < 20: -> choice}
+{age < 20: -> nextYear}
 
-<> {name} a la possiblité de se marier.
+À l'age de {age} ans, {name} a la possiblité de se marier.
 
 + [Ok (support + 5, richesse -5)] {alter(rich, -5)} {alter(support, 5)}
 + [Non merci]
@@ -465,13 +471,11 @@ Vous naissez sous le nom de {name}.
 
 = prostitute
 
-{age < 21: -> choice}
+{age < 21 or yesprostitute: -> nextYear}
 
-{tags ? yesprostitute: -> choice}
+À l'age de {age} ans, on propose à {name} une "promotion canapé" pour gagner plus d'argent.
 
-<> on propose à {name} une "promotion canapé" pour gagner plus d'argent.
-
-+ [Ok (karma -10, richesse +10)] {addTag(yesprostitute)} {alter(karma, -10)} {alter(rich, 10)}
++ (yesprostitute) [Ok (karma -10, richesse +10)] {alter(karma, -10)} {alter(rich, 10)}
 + [Non merci]
 
 - -> endEvent
@@ -480,7 +484,7 @@ Vous naissez sous le nom de {name}.
 
 {age < 25: -> studyTravel}
 
-<> {name} a la possiblité de changer de pays pour son travail.
+À l'age de {age} ans, {name} a la possiblité de changer de pays pour son travail.
 
 + [Ok (support -5, richesse +5)] {alter(support, -5)} {alter(rich, 5)}
 + [Non merci]
@@ -489,7 +493,7 @@ Vous naissez sous le nom de {name}.
 
 = studyTravel
 
-<> {name} a la possiblité de changer de pays pour ses études.
+À l'age de {age} ans, {name} a la possiblité de changer de pays pour ses études.
 
 + [Ok (support -3, education +3)] {alter(support, -3)} {alter(education, 3)}
 + [Non merci]
@@ -498,9 +502,9 @@ Vous naissez sous le nom de {name}.
 
 = delegate
 
-{age < 7 or age > 18: -> choice}
+{age < 7 or age > 18: -> nextYear}
 
-<> {name} peut se présenter à l'élection des délégués.
+À l'age de {age} ans, {name} peut se présenter à l'élection des délégués.
 
 + [Ok (?)]
 + [Non merci]
@@ -508,8 +512,6 @@ Vous naissez sous le nom de {name}.
 - -> endEvent
 
 = endEvent
-
-Carac : ({rich}, {education}, {support})
 
 -> nextYear
 
@@ -526,11 +528,11 @@ Votre incarnation est morte à l'age de {age} ans.
 
 == score ==
 
-Votre score
+Votre score :
 
-+ [Nouvelle incarnation]
-  -> init
-* [Quitter le cycle des ré-incarnations]
+Après cette vie vous avez {karma} points de karma.
+
+
   -> END
 
 
