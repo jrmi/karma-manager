@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Intro from './views/Intro.vue';
+import End from './views/End.vue';
 
 Vue.use(Router);
 
@@ -16,6 +17,11 @@ export default new Router({
       path: '/story',
       name: 'story',
       component: Home
+    },
+    {
+      path: '/end',
+      name: 'end',
+      component: End
     },
     {
       path: '/about',

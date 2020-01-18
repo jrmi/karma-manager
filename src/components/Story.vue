@@ -11,25 +11,34 @@
       </div>
       <ul class="choices" v-if="state.currentChoices.length > 0">
         <li v-for="choice in state.currentChoices" :key="choice.index">
-          <!--a href="#" @click="handleChoice(choice.index)" v-html="choice.text"></a-->
-          <a href="#" class="choice grow" @click="handleChoice(choice.index)" v-html="choice.text"></a>
+          <a
+            href="#"
+            class="choice grow"
+            @click="handleChoice(choice.index)"
+            v-html="choice.text"
+          ></a>
         </li>
       </ul>
       <div v-if="state.currentChoices.length == 0">
         <p>Vous avez terminé. Voulez vous ?</p>
         <ul class="choices">
           <li>
-            <a class="choice grow" href="#" @click.prevent="restart">Vous réincarner</a>
+            <a class="choice grow" href="#" @click.prevent="restart"
+              >Vous réincarner</a
+            >
           </li>
-          <li>
-            <a class="choice grow" href="#" @click.prevent="end">Quitter le cycle des réincarnations</a>
+          <li v-if="state.karma > 88">
+            <router-link to="/end"
+              >Quitter le cycle des réincarnations</router-link
+            >
           </li>
         </ul>
       </div>
     </article>
     <aside>
       <h2>Statut</h2>
-      <p>Karma acquis : {{ state.currentVariables['karma'] }}</p>
+      <p>Karma acquis : {{ state.currentVariables['karma'] }}/88</p>
+      <p>Réincarnations : {{ state.lifeCount }}</p>
       <p>
         Richesses : {{ state.currentVariables['rich'] }} %
         <br />
@@ -45,10 +54,10 @@
 </template>
 
 <script>
-import store from "@/store";
+import store from '@/store';
 
 export default {
-  name: "Story",
+  name: 'Story',
   props: {
     storyContent: Object
   },
@@ -68,18 +77,19 @@ export default {
       await store.actions.chooseChoice(index);
     },
     async restart() {
-      store.state.karma = store.state.currentVariables["karma"];
+      store.state.lifeCount += 1;
+      store.state.karma = store.state.currentVariables['karma'];
       await store.actions.resetStory();
     },
     end() {
-      console.log("end");
+      console.log('end');
     },
     async talk() {
       //await store.actions.loadStory(storyContent);
-      await store.actions.goto("arthur");
+      await store.actions.goto('arthur');
     },
     test() {
-      console.log("end");
+      console.log('end');
     }
   }
 };
@@ -88,6 +98,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .story {
+  width: 100%;
   display: flex;
   justify-content: space-between;
 }
@@ -108,7 +119,7 @@ article {
 h1,
 h2 {
   text-align: center;
-  font-family: "Quattrocento", Georgia, "Times New Roman", Times, serif;
+  font-family: 'Quattrocento', Georgia, 'Times New Roman', Times, serif;
   margin: 0;
   padding: 0;
 }
@@ -170,7 +181,7 @@ p.show {
 }
 
 .underline::before {
-  content: "";
+  content: '';
   position: absolute;
   left: 50%;
   bottom: 0;

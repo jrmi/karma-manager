@@ -29,6 +29,7 @@ const store = {
     currentTags: [],
     currentStory: {},
     karma: 0,
+    lifeCount: 0,
     data: null
   },
   computed: {
