@@ -162,9 +162,6 @@ LIST tags = nothing
   ~ initCarac(rich_, education_, support_, simplicity_, remain - add)
 }
 
-== function visited(divert) ==
-  ~ return TURNS_SINCE(divert) > 1 and TURNS_SINCE(divert) < (TURNS() - start)
-
 == init ==
 
 ~ age = 0
@@ -188,7 +185,6 @@ LIST tags = nothing
 
 Voulez-vous vous incarner dans cette famille ?
 
-
 + [Oui]
   -> birth
 
@@ -199,7 +195,7 @@ Voulez-vous vous incarner dans cette famille ?
 == birth ==
 
 ~ gender = "{~F|M}"
-{ gender=="F":
+{ gender == "F":
   ~ name = getGirlName()
 - else:
   ~ name = getBoyName()
@@ -229,7 +225,6 @@ Vous naissez sous le nom de {name}.
 
 == event ==
 
-
 -> choiceAction
 
 = choiceAction
@@ -239,8 +234,6 @@ Vous naissez sous le nom de {name}.
 /************** ACTIONS *************/
 
 == action ==
-
-action
 
 {age < 17: -> nextYear}
 
@@ -269,7 +262,7 @@ action
 
 = cleanOcean
 
-{RANDOM(1,(education+rich)/2) < 10: dommage -> nextYear}
+{RANDOM(1,(education+rich)/2) < 10: -> nextYear}
 
 À l'age de {age} ans, {name} organise {|une nouvelle|pour la troisième fois} une opération <>
 {~internationnale|mondiale|générale} de nettoyage des océans {||et c'est un grand succès}.
@@ -278,13 +271,15 @@ action
 
 = lessGarbage
 
-{RANDOM(1,(education+support)/2) < 10: dommage -> nextYear}
+{RANDOM(1,(education+support)/2) < 10: -> nextYear}
 
 À l'age de {age} ans, {name} améliore {|encore plus|toujours plus} les embalages afin de générer moins de déchets.
 
 -> action.endAction
 
 == politicAction ==
+
+{extremGroupYes: -> nextYear}
 
 ~ temp c = RANDOM(1,2)
 
@@ -295,7 +290,7 @@ action
 
 = peace
 
-{RANDOM(1,(education+simplicity)/2) < 10: dommage -> nextYear}
+{RANDOM(1,(education+simplicity)/2) < 10: -> nextYear}
 
 À l'age de {age} ans, {name} fait signer un traité de paix {~en Irak|en Iran|au Soudan|en Syrie|au Malie|au Pakistan}.
 
@@ -303,7 +298,7 @@ action
 
 = lawImmigration
 
-{RANDOM(1,(education+simplicity)/2) < 10: dommage -> nextYear}
+{RANDOM(1,(education+simplicity)/2) < 10: -> nextYear}
 
 À l'age de {age} ans, {name} fait voter une nouvelle Loi pour protéger les <>
 {shuffle:
@@ -328,7 +323,7 @@ action
 
 = assos
 
-{RANDOM(1, simplicity) < 10: dommage -> nextYear}
+{RANDOM(1, simplicity) < 10: -> nextYear}
 
 À l'age de {age} ans, {name} met en place une association humanitaire pour <>
 {~sauver les enfants abandonnés|soigner les femmes maltraitées|aider les victimes de viols|accompagner les immigrés}.
@@ -337,7 +332,7 @@ action
 
 = mission
 
-{RANDOM(1, simplicity) < 10: dommage -> nextYear}
+{RANDOM(1, simplicity) < 10:  -> nextYear}
 
 À l'age de {age} ans, {name} anime un {|nouveau} projet de création d'école pour enfants {~défavorisés|abandonnés|maltraités|en difficultés}.
 
@@ -352,7 +347,7 @@ action
 
 = paint
 
-{RANDOM(1, (support + education) / 2) < 10: dommage -> nextYear}
+{RANDOM(1, (support + education) / 2) < 10:  -> nextYear}
 
 À l'age de {age} ans, {name} créé {|||encore} une {|nouvelle|série} oeuvre picturale {~révolutionnant le genre|d'un nouveau genre|exposée dans plusieurs musées}.
 
@@ -360,13 +355,17 @@ action
 
 = building
 
-{RANDOM(1, (rich + education) / 2) < 10: dommage -> nextYear}
+{extremGroupYes: -> nextYear}
+
+{RANDOM(1, (rich + education) / 2) < 10:  -> nextYear}
 
 À l'age de {age} ans, {name} fait construire {~un immeuble en bois zéro emission|une un parc éolien|un éco-village}.
 
 -> action.endAction
 
 == science ==
+
+{extremGroupYes: -> nextYear}
 
 ~ temp c = RANDOM(1,2)
 
@@ -377,7 +376,7 @@ action
 
 = medical
 
-{RANDOM(1, (simplicity + education) / 2) < 10: dommage -> nextYear}
+{RANDOM(1, (simplicity + education) / 2) < 10:  -> nextYear}
 
 À l'age de {age} ans,  {name} invente <>
 { shuffle:
@@ -390,7 +389,7 @@ action
 
 = energy
 
-{RANDOM(1, education) < 10: dommage -> nextYear}
+{RANDOM(1, education) < 10:  -> nextYear}
 
 À l'age de {age} ans, {name} conçoit une nouvelle manière de stocker l'energie qui permet de mieux utiliser les sources d'energies renouvelables.
 
@@ -420,7 +419,7 @@ choice
 
 À l'age de {age} ans, on propose à {name} d'aller dans une école renomée.
 
-+ [Ok]
++ [Ok] 
 + [Non merci]
 
 - -> endEvent
@@ -442,7 +441,7 @@ choice
 
 À l'age de {age} ans, on propose à {name} de rejoindre le groupe militant "{~les ecoloWarrior|sauvons les dauphins|brulons les pollueurs}".
 
-+ [Ok]
++ (extremGroupYes) [Ok]
 + [Non merci]
 
 - -> endEvent
@@ -460,11 +459,11 @@ choice
 
 = mariage
 
-{age < 20: -> nextYear}
+{age < 20 or married: -> nextYear}
 
 À l'age de {age} ans, {name} a la possiblité de se marier.
 
-+ [Ok (support + 5, richesse -5)] {alter(rich, -5)} {alter(support, 5)}
++ (married) [Ok (support + 10, richesse -5)] {alter(rich, -5)} {alter(support, 10)}
 + [Non merci]
 
 - -> endEvent
@@ -473,9 +472,9 @@ choice
 
 {age < 21 or yesprostitute: -> nextYear}
 
-À l'age de {age} ans, on propose à {name} une "promotion canapé" pour gagner plus d'argent.
+À l'age de {age} ans, on propose {!|encore} à {name} une "promotion canapé" pour gagner plus d'argent.
 
-+ (yesprostitute) [Ok (karma -10, richesse +10)] {alter(karma, -10)} {alter(rich, 10)}
++ (yesprostitute) [Ok (support -10, richesse +10)] {alter(support, -10)} {alter(rich, 10)}
 + [Non merci]
 
 - -> endEvent
@@ -486,7 +485,7 @@ choice
 
 À l'age de {age} ans, {name} a la possiblité de changer de pays pour son travail.
 
-+ [Ok (support -5, richesse +5)] {alter(support, -5)} {alter(rich, 5)}
++ (traveller) [Ok (support -5, richesse +5)] {alter(support, -5)} {alter(rich, 5)}
 + [Non merci]
 
 - -> endEvent
@@ -495,7 +494,7 @@ choice
 
 À l'age de {age} ans, {name} a la possiblité de changer de pays pour ses études.
 
-+ [Ok (support -3, education +3)] {alter(support, -3)} {alter(education, 3)}
++ {traveller} [Ok (support -3, education +3)] {alter(support, -3)} {alter(education, 3)}
 + [Non merci]
 
 - -> endEvent
@@ -506,7 +505,18 @@ choice
 
 À l'age de {age} ans, {name} peut se présenter à l'élection des délégués.
 
-+ [Ok (?)]
++ (political) [Ok]
++ [Non merci]
+
+- -> endEvent
+
+= mayor
+
+{age < 22 : -> nextYear}
+
+À l'age de {age} ans, {name} peut se présenter à la mairie de sa commune.
+
++ (political) [Ok]
 + [Non merci]
 
 - -> endEvent
