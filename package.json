@@ -1,11 +1,12 @@
 {
-  "name": "ink-story",
-  "version": "0.1.0",
+  "name": "karma-manager",
+  "version": "1.2.0",
   "private": true,
   "scripts": {
     "start": "npm run serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "deploy": "netlify deploy --prod",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
     "story": "mono $INKLECATE -c -o public/story.json ./src/story.ink"
