@@ -3,6 +3,8 @@ VAR education = 0
 VAR support = 0
 VAR simplicity = 0
 
+VAR debug = false
+
 VAR age = 0
 VAR karma = 0
 
@@ -67,9 +69,9 @@ LIST tags = nothing
   - currentAge <= 44:
     ~ return (RANDOM(1, 279) == 1)
   - currentAge <= 54:
-    ~ return (RANDOM(1, 112) == 1)
+    ~ return (RANDOM(1, 122) == 1)
   - currentAge <= 64:
-    ~ return (RANDOM(1, 42) == 1)
+    ~ return (RANDOM(1, 52) == 1)
   - currentAge <= 74:
     ~ return (RANDOM(1, 15) == 1)
   - currentAge <= 84:
@@ -87,12 +89,10 @@ LIST tags = nothing
     ~ return (RANDOM(1, 20) == 1)
   - currentAge <= 24:
     ~ return (RANDOM(1, 2) == 1)
-  - currentAge <= 24:
-    ~ return (RANDOM(1, 2) == 1)
   - currentAge <= 34:
-    ~ return (RANDOM(1, 3) == 1)
+    ~ return (RANDOM(1, 2) == 1)
   - currentAge <= 44:
-    ~ return (RANDOM(1, 5) == 1)
+    ~ return (RANDOM(1, 3) == 1)
   - currentAge <= 54:
     ~ return (RANDOM(1, 25) == 1)
   - currentAge <= 64:
@@ -116,7 +116,6 @@ LIST tags = nothing
   - else:
     ~ return "sans aucun besoin"
 }
-
 
 == function descEducationParent(educ) ==
 {
@@ -155,7 +154,8 @@ LIST tags = nothing
 }
 
 == function test(threshold) ==
-  ~ return ((RANDOM(1,100) + RANDOM(1,100)) / 2) > threshold
+  ~ temp res = RANDOM(1,100)
+  ~ return res > threshold
 
 == function initCarac(ref rich_, ref education_, ref support_, ref simplicity_, remain) ==
 
@@ -173,11 +173,25 @@ LIST tags = nothing
   ~ initCarac(rich_, education_, support_, simplicity_, remain - add)
 }
 
+/****************** INIT ******************************/
+
 == init ==
 
 ~ age = 0
 ~ tags = ()
 ~ start = TURNS()
+~ politician = 0
+~ scientist = 0
+~ artist = 0
+~ activist = 0
+~ humanist = 0
+
+~ gender = "{~F|M}"
+{ gender == "F":
+  ~ name = getGirlName()
+- else:
+  ~ name = getBoyName()
+}
 
 -> parentChoice
 
@@ -187,42 +201,70 @@ LIST tags = nothing
 ~ education = 0
 ~ support = 0
 ~ simplicity = 0
-~ initCarac(rich, education, support, simplicity, 50 + karma)
+~ initCarac(rich, education, support, simplicity, 40 + karma)
+
+{not first:Première proposition :}
+{first and not second:Deuxième proposition :}
+{second:Proposition finale :}
 
 {getGirlName()} et {getBoyName()} {getName()} sont deux parents {descRichParent(rich)}.
 <> Leur éducation est {descEducationParent(education)}. 
 <> Ils sont {descSupportParent(support)}.
-<> De plus, ils sont {descSimplicityParent(simplicity)} avec les autres.
+<> Ils sont {descSimplicityParent(simplicity)} avec autrui.
 
 Voulez-vous vous incarner dans cette famille ?
 
 + [Oui]
   -> birth
 
-* (first) [Non, pas ceux là]
+* (first) [Non, suivant…]
   -> parentChoice
 
-* {first} [Non, la prochaine sera la bonne]
+* (second) {first} [La prochaine sera la bonne]
   -> parentChoice
+
++ {debug}[-- Mort --] -> death
++ {debug}[-- +10 karma --] {alter(karma, 10)} -> parentChoice
++ {debug}[-- +10 age --] {alter(age, 10)} -> parentChoice
++ {debug}[-- Max stats --] 
+  {set(rich, 100)}
+  {set(education, 100)}
+  {set(support, 100)}
+  {set(simplicity, 100)}
+  -> nextYear
 
 
 == birth ==
 
-~ gender = "{~F|M}"
-{ gender == "F":
-  ~ name = getGirlName()
-- else:
-  ~ name = getBoyName()
+Vos parents sont {~heureux|ravis|soulagés|surpris|épuisés mais heureux|content}
+<> d'annoncer la naissance de leur {gender=="F":fille|fils} {name}.
+
+Son signe astral est <>
+{ shuffle:
+  - Bélier
+  - Taureau
+  - Gémeaux
+  - Cancer
+  - Lion
+  - Vierge
+  - Balance
+  - Scorpion
+  - Sagittaire
+  - Capricorne
+  - Verseau
+  - Poissons
 }
+<> et {gender=="F":elle|il} est {gender=="F":{~gauchère|droitière|droitière|droitière}|{~gaucher|droitier|droitier|droitier}}.
 
-Vous naissez sous le nom de {name}.
+Vous allez maintenant suivre la vie de {name}.
 
-+ [Ok]
++ [Commençons…]
   -> nextYear
 
 /************** NEXTYEAR *************/
 
 == nextYear ==
+
 
 ~ age++
 
@@ -277,7 +319,6 @@ Vous naissez sous le nom de {name}.
 }
 
 = cleanOcean
-
 
 À l'age de {age} ans, {name} organise {|une nouvelle|pour la troisième fois} une opération <>
 {~internationnale|mondiale|générale} de nettoyage des océans {||et c'est un grand succès}.
@@ -419,10 +460,10 @@ Vous naissez sous le nom de {name}.
 
 {age < 20: -> nextYear}
 
-À l'age de {age} ans, {name} a la possiblité de faire un enfant.
+À l'age de {age} ans, {name} souhaite faire un enfant.
 
-+ [Ok] {alter(rich, -5)} {alter(support, 5)}
-+ [Non merci]
++ [Bonne idée] {alter(rich, -5)} {alter(support, 5)}
++ [Peut-être plus tard]
 
 - -> endEvent
 
@@ -443,7 +484,7 @@ Vous naissez sous le nom de {name}.
 
 À l'age de {age} ans, on propose à {name} de rejoindre le groupe militant "{~les ecoloWarrior|sauvons les dauphins|actions contre les pollueurs}".
 
-+ [Ok] {alter(activist, 10)} {alter(politician, -10)}
++ [Toujours d'accord pour agir] {alter(activist, 10)} {alter(politician, -10)}
 + [Non merci]
 
 - -> endEvent
@@ -454,7 +495,7 @@ Vous naissez sous le nom de {name}.
 
 À l'age de {age} ans, {name} a la possiblité de changer de pays pour son travail.
 
-+ (traveller) [Ok] {alter(support, -5)} {alter(rich, 5)}
++ [Le voyage c'est la santé] {alter(support, -5)} {alter(rich, 5)}
 + [Non merci]
 
 - -> endEvent
@@ -463,7 +504,7 @@ Vous naissez sous le nom de {name}.
 
 À l'age de {age} ans, {name} a la possiblité de changer de pays pour ses études.
 
-+ (traveller) [Ok] {alter(support, -3)} {alter(education, 3)}
++ [Les voyages forment la jeunesse] {alter(support, -3)} {alter(education, 3)}
 + [Non merci]
 
 - -> endEvent
@@ -474,7 +515,7 @@ Vous naissez sous le nom de {name}.
 
 À l'age de {age} ans, {name} peut se présenter à l'élection des délégués.
 
-+ [Ok] {alter(activist, -3)} {alter(politician, 3)}
++ [C'est une bonne première expérience] {alter(activist, -3)} {alter(politician, 3)}
 + [Non merci]
 
 - -> endEvent
@@ -485,7 +526,7 @@ Vous naissez sous le nom de {name}.
 
 À l'age de {age} ans, {name} peut se présenter à la mairie de sa commune.
 
-+ [Ok] {alter(activist, -10)} {alter(politician, 10)}
++ [D'accord pour agir pour sa commune] {alter(activist, -10)} {alter(politician, 10)}
 + [Non merci]
 
 - -> endEvent
@@ -494,9 +535,9 @@ Vous naissez sous le nom de {name}.
 
 {age < 18 or age > 23: -> nextYear}
 
-À l'age de {age} ans, {name} a la possibilité de rentrer dans une grande école politique.
+À l'age de {age} ans, {name} a la possibilité de rentrer dans {~une grande école|un cursus universitaire} politique.
 
-+ [Ok] {alter(politician, 15)} {alter(scientist, -5)} {alter(activist, -5)} {alter(artist, -5)} {alter(humanist, -5)}
++ [Bonne idée] {alter(politician, 15)} {alter(scientist, -5)} {alter(activist, -5)} {alter(artist, -5)} {alter(humanist, -5)}
 + [Non merci]
 
 - -> endEvent
@@ -507,7 +548,7 @@ Vous naissez sous le nom de {name}.
 
 À l'age de {age} ans, {name} a la possibilité de rentrer dans une grande école scientifique.
 
-+ [Ok] {alter(scientist, 15)} {alter(politician, -5)} {alter(activist, -5)} {alter(artist, -5)} {alter(humanist, -5)}
++ [Les science avant tout] {alter(scientist, 15)} {alter(politician, -5)} {alter(activist, -5)} {alter(artist, -5)} {alter(humanist, -5)}
 + [Non merci]
 
 - -> endEvent
@@ -518,7 +559,7 @@ Vous naissez sous le nom de {name}.
 
 À l'age de {age} ans, {name} a la possibilité de rentrer dans une grande école artistique.
 
-+ [Ok] {alter(artist, 15)} {alter(politician, -5)} {alter(activist, -5)} {alter(scientist, -5)} {alter(humanist, -5)}
++ [L'art pour l'art] {alter(artist, 15)} {alter(politician, -5)} {alter(activist, -5)} {alter(scientist, -5)} {alter(humanist, -5)}
 + [Non merci]
 
 - -> endEvent
@@ -529,7 +570,7 @@ Vous naissez sous le nom de {name}.
 
 À l'age de {age} ans, {name} a la possibilité de rentrer dans une grande école de littérature.
 
-+ [Ok] {alter(humanist, 15)} {alter(politician, -5)} {alter(activist, -5)} {alter(scientist, -5)} {alter(artist, -3)}
++ [En avant pour les belles lettres] {alter(humanist, 15)} {alter(politician, -5)} {alter(activist, -5)} {alter(scientist, -5)} {alter(artist, -3)}
 + [Non merci]
 
 - -> endEvent
@@ -540,7 +581,7 @@ Vous naissez sous le nom de {name}.
 
 À l'age de {age} ans, on propose à {name} d'aller faire une mission humanitaire à l'étranger.
 
-+ [Ok] {alter(activist, 5)} {alter(politician, -5)}
++ [Bonne idée] {alter(activist, 5)} {alter(politician, -5)}
 + [Non merci]
 
 - -> endEvent
@@ -552,7 +593,7 @@ Vous naissez sous le nom de {name}.
 À l'age de {age} ans, on propose à {name} d'aller faire une retraite spirituelle dans un 
 <> grand monastère.
 
-+ [Ok] {alter(simplicity, 5)} {alter(support, -3)} {alter(rich, -3)}
++ [Bonne idée] {alter(simplicity, 5)} {alter(support, -3)} {alter(rich, -3)}
 + [Non merci]
 
 - -> endEvent
@@ -566,19 +607,31 @@ Vous naissez sous le nom de {name}.
 
 == death ==
 
-Votre incarnation est morte à l'age de {age} ans. 
-<> C'est {~un accident|la maladie|age>65:la veillesse} qui l'a emportée.
+{gender=="F": {name} est morte à l'âge de {age} ans.} <>
+{gender=="M": {name} est mort à l'âge de {age} ans.} <>
+<> C'est <>
+{ 
+- age<5:
+  {~un accident|une maladie infantile}
+- age>65:
+  {~un accident|la maladie|la veillesse}
+- else :
+  {~un accident|la maladie}
+}
+<> qui l'a emportée.
 
-+ [Ok]
++ [Dommage]
   -> score
-
++ [Ce fut une belle vie]
+  -> score
++ [Paix à vous même]
+  -> score
 
 == score ==
 
-Votre score :
-
 Après cette vie vous avez {karma} points de karma.
 
+Que souhaitez-vous faire maintenant ?
 
   -> END
 

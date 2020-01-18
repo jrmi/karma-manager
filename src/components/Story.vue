@@ -4,7 +4,7 @@
       <div v-for="(line, index) in state.currentLines" :key="line.key">
         <p
           v-html="line.line"
-          :style="{ 'animation-delay': index * 200 + 'ms' }"
+          :style="{ 'animation-delay': index * 100 + 'ms' }"
           :class="[line.tags.class || ''].concat(['text-focus-in'])"
         ></p>
         <transition appear appear-class="sshow"></transition>
@@ -20,14 +20,13 @@
         </li>
       </ul>
       <div v-if="state.currentChoices.length == 0">
-        <p>Vous avez terminé. Voulez vous ?</p>
         <ul class="choices">
           <li>
             <a class="choice grow" href="#" @click.prevent="restart"
               >Vous réincarner</a
             >
           </li>
-          <li v-if="state.karma > 88">
+          <li v-if="state.currentVariables['karma'] >= 88">
             <router-link to="/end"
               >Quitter le cycle des réincarnations</router-link
             >
@@ -198,7 +197,7 @@ p.show {
 }
 
 .text-focus-in {
-  animation: text-focus-in 200ms cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+  animation: text-focus-in 100ms cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
 }
 
 .grow {
