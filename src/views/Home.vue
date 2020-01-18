@@ -21,7 +21,7 @@ export default {
 };
 </script>
 
-<style >
+<style>
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,700|Quattrocento:700");
 @import url("https://fonts.googleapis.com/css?family=Goudy+Bookletter+1911&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Gentium+Book+Basic&display=swap");

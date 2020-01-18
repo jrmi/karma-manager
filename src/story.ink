@@ -188,7 +188,10 @@ Voulez-vous vous incarner dans cette famille ?
 + [Oui]
   -> birth
 
-+ [Non]
+* (first) [Non, pas encore]
+  -> parentChoice
+
+* {first} [Non, la prochaine sera la bonne]
   -> parentChoice
 
 
@@ -279,7 +282,7 @@ Vous naissez sous le nom de {name}.
 
 == politicAction ==
 
-{extremGroupYes: -> nextYear}
+{choice.extremGroupYes: -> nextYear}
 
 ~ temp c = RANDOM(1,2)
 
@@ -355,7 +358,7 @@ Vous naissez sous le nom de {name}.
 
 = building
 
-{extremGroupYes: -> nextYear}
+{choice.extremGroupYes: -> nextYear}
 
 {RANDOM(1, (rich + education) / 2) < 10:  -> nextYear}
 
@@ -365,7 +368,7 @@ Vous naissez sous le nom de {name}.
 
 == science ==
 
-{extremGroupYes: -> nextYear}
+{choice.extremGroupYes: -> nextYear}
 
 ~ temp c = RANDOM(1,2)
 

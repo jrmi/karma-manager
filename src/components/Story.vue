@@ -28,7 +28,8 @@
       </div>
     </article>
     <aside>
-      <h2>Caractéristiques</h2>
+      <h2>Statut</h2>
+      <p>Karma acquis : {{ state.currentVariables['karma'] }}</p>
       <p>
         Richesses : {{ state.currentVariables['rich'] }} %
         <br />
@@ -38,7 +39,6 @@
         <br />
         Sagesse : {{ state.currentVariables['simplicity'] }} %
       </p>
-      <p>Karma : {{ state.currentVariables['karma'] }}</p>
       <a class="choice grow" href="#" @click.prevent="restart">Recommencer</a>
     </aside>
   </div>
@@ -88,28 +88,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .story {
-  display: block;
-  max-width: 1024px;
-  /*width: 90vw;*/
-  margin: 0 auto;
-  padding: 20px;
-  color: #ddd;
-  font-size: 16pt;
-  font-family: "Gentium Book Basic", serif;
   display: flex;
   justify-content: space-between;
-}
-
-@media (max-width: 1024px) {
-  .story {
-    width: 100vw;
-  }
-}
-
-@media (max-width: 1024px) {
-  .story {
-    width: 100vw;
-  }
 }
 
 aside {
@@ -140,26 +120,11 @@ button {
 }
 
 p {
-  /*opacity: 1;
-  transition: opacity 1500ms;*/
   margin: 1em 0em;
 }
 
 p.show {
   opacity: 0;
-}
-
-a {
-  text-decoration: none;
-  border: 1px solid #ddd;
-  padding: 0.25em 0.5em;
-  margin: 5px 0px;
-  border-radius: 3px;
-  color: #eee;
-}
-a:hover {
-  color: rgb(218, 126, 126);
-  border-color: rgb(218, 126, 126);
 }
 
 .choices {
@@ -181,13 +146,7 @@ a:hover {
 }
 
 .choice {
-  color: #fc2f70;
   padding: 0.2em 0.5em;
-  outline: none;
-  border: none;
-  font-family: inherit;
-  font-size: inherit;
-  background-color: transparent;
   display: block;
 }
 

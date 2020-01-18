@@ -43,7 +43,6 @@ const store = {
   actions: {
     async loadStory(storyContent) {
       //if (!store.state.storyLoaded) {
-      console.log(JSON.stringify(storyContent));
       store.state.currentStory = storyContent;
       story = new Story(storyContent);
       story.state.variablesState.$('karma', store.state.karma);
