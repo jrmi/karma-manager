@@ -108,37 +108,37 @@ LIST tags = nothing
 == function descRichParent(rich_) ==
 {
   - rich_ < 5:
-    ~ return "ayant du mal a terminer les fin de mois"
+    ~ return "qui ont du mal à terminer leurs fins de mois"
   - rich_ < 15:
-    ~ return "de la classe moyenne"
+    ~ return "issue de la classe moyenne"
   - rich_ < 25:
-    ~ return "avec une bonne aisance materielle"
+    ~ return "qui possèdent une aisance materielle certaine"
   - else:
-    ~ return "sans aucun besoin"
+    ~ return "qui payent l'impôt sur la fortune"
 }
 
 == function descEducationParent(educ) ==
 {
   - educ < 5:
-    ~ return "plutôt faible"
+    ~ return "ils n'en ont pas"
   - educ < 15:
-    ~ return "habituelle"
+    ~ return "ils ont suivi le cursus habituel"
   - educ < 25:
-    ~ return "élevée"
+    ~ return "ils ont fait des études longues"
   - else:
-    ~ return "excellente"
+    ~ return "ils conaissent tout sur tout"
 }
 
 == function descSupportParent(support_) ==
 {
   - support_ < 5:
-    ~ return "peu attentifs à leurs enfants"
+    ~ return "sont peu attentifs à leurs enfants"
   - support_ < 15:
-    ~ return "attentifs à leur famille"
+    ~ return "font le minimum pour leur famille"
   - support_ < 25:
-    ~ return "très proches de leur famille"
+    ~ return "considèrent que la famille est importante"
   - else:
-    ~ return "excessivement protecteurs avec leurs proches"
+    ~ return "ne rateraient pour rien au monde une réunion de famille"
 }
 
 == function descSimplicityParent(support_) ==
@@ -209,8 +209,8 @@ Choisissez vos parents. <>
 {second:Proposition finale :}
 
 {getGirlName()} et {getBoyName()} {getName()} sont deux parents {descRichParent(rich)}.
-<> Leur éducation est {descEducationParent(education)}. 
-<> Ils sont {descSupportParent(support)}.
+<> En ce qui concerne leur éducation, {descEducationParent(education)}. 
+<> Ils {descSupportParent(support)}.
 <> Ils sont {descSimplicityParent(simplicity)} avec autrui.
 
 Voulez-vous vous incarner dans cette famille ?
@@ -237,7 +237,7 @@ Voulez-vous vous incarner dans cette famille ?
 
 == birth ==
 
-Vos parents sont {~heureux|ravis|soulagés|surpris|épuisés mais heureux|content}
+Vos parents sont {~heureux|ravis|soulagés|surpris|épuisés mais heureux|contents}
 <> d'annoncer la naissance de leur {gender=="F":fille|fils} {name}.
 
 Son signe astral est <>
@@ -312,7 +312,7 @@ Grâce à l'action de votre incarnation, vous gagnez du Karma (+8).
 
 = failAction
 
-C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
+C'est une occasion ratée, mais la prochaine sera sans doute la bonne.
 
 + [Ok] 
    -> nextYear
@@ -323,12 +323,12 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
 {debug: <> --ecology}
 
 {test((education+rich)/2 + activist) : 
-  À l'âge de {age} ans, la faiblesse de son éducation ({education}%) et de ses ressources ({rich}%) empêchent 
-  <> {name} de réaliser une action militante.
+  À l'âge de {age} ans, le manque d'éducation ({education}%) et de ressources matérielles ({rich}%) empêchent 
+  <> {name} de réaliser une action militante. Dommage…
  -> action.failAction
 }
 
-À l'âge de {age} ans, grâce{activist>0: à sa carrière,} à son éducation ({education}%) et à ses ressources ({rich}%), <>
+À l'âge de {age} ans, grâce{activist>0: à sa carrière,} à son éducation ({education}%) et à ses ressources matérielles ({rich}%), <>
 
 { shuffle:
   - -> cleanOcean
@@ -337,14 +337,14 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
 
 = cleanOcean
 
-{name} organise {|une nouvelle|pour la troisième fois} une opération <>
+{name} organise {une|une nouvelle|pour la troisième fois une} opération <>
 {~internationnale|mondiale|générale} de nettoyage des océans {||et c'est un grand succès}.
 
 -> action.endAction
 
 = lessGarbage
 
-{name} améliore {|encore plus|toujours plus} les embalages afin de générer moins de déchets.
+{name} améliore {|encore plus|toujours plus} les emballages afin de générer moins de déchets.
 
 -> action.endAction
 
@@ -353,16 +353,14 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
 {debug: <> --politic}
 
 {test((support+rich)/2 + politician):  
-  À l'âge de {age} ans, la faiblesse de son entourage ({support}%) et de ses ressources ({rich}%) ne permettent pas à 
+  À l'âge de {age} ans, le manque de soutien de ses proches ({support}%) ainsi que ses difficultés matérielles ({rich}%) ne permettent pas à 
   <> {name} de réaliser l'action politique {gender=="F":qu'elle|qu'il} souhaitait.
  -> action.failAction
 }
 
-À l'âge de {age} ans, grâce{politician>0: à sa carrière,} au soutient de son entourage ({support}%) et à ses ressources ({rich}%), <>
+À l'âge de {age} ans, grâce{politician>0: à sa carrière,} au soutien de son entourage ({support}%) et à ses ressources matérielles ({rich}%), <>
 
-~ temp c = RANDOM(1,2)
-
-{ c:
+{ shuffle:
   - 1: -> peace
   - 2: -> lawImmigration
 }
@@ -378,8 +376,8 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
 {name} fait voter une nouvelle Loi pour protéger les <>
 {shuffle:
   - immigrés
-  - femmes batues
-  - enfants battus
+  - femmes battues
+  - enfants exploités
   - personnes victimes de viols
   - plus démunis
   - manifestants des violences policières
@@ -397,7 +395,7 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
  -> action.failAction
 }
 
-À l'âge de {age} ans, grâce{humanist>0: à sa carrière,} au soutient de son entourage ({support}%) et à sa sagesse ({simplicity}%), <>
+À l'âge de {age} ans, grâce{humanist>0: à sa carrière,} au soutien de son entourage ({support}%) et à sa sagesse ({simplicity}%), <>
 
 ~ temp c = RANDOM(1,2)
 
@@ -409,7 +407,15 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
 = assos
 
 {name} met en place une association humanitaire pour <>
-{~sauver les enfants abandonnés|soigner les femmes maltraitées|aider les victimes de viols|accompagner les immigrés}.
+{ shuffle:
+ - accueillir les enfants abandonnés
+ - réduire les inégalités homme/femme
+ - faire avancer la recherche sur les maladies auto-immunes
+ - éviter le décrochage scolaire
+ - lutter contre la faim dans le monde
+ - améliorer le taux d'alphabétisation dans le monde
+ - venir en aide aux réfugiés {~|climatiques} 
+}.
 
 -> action.endAction
 
@@ -424,7 +430,7 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
 {debug: <> --art}
 
 {test((simplicity + education) / 2 + artist): 
-  À l'âge de {age} ans, la faiblesse de son éducation ({education}%) et de sa sagesse ({simplicity}%) font échouer les  
+  À l'âge de {age} ans, son manque d'éducation ({education}%) et son manque de discernement ({simplicity}%) font échouer les  
   <> projet artistiques de {name}.
  -> action.failAction
 }
@@ -434,11 +440,18 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
 { shuffle:
   - -> paint
   - -> building
+  - -> music
 }
 
 = paint
 
-{name} créé{gender=="F":e} {|||encore} une {|nouvelle|série} oeuvre picturale {~révolutionnant le genre|d'un nouveau genre|exposée dans plusieurs musées}.
+{name} peint {|||encore} une {|nouvelle|série} oeuvre picturale {~révolutionnant le genre|d'un nouveau genre|exposée dans plusieurs musées}.
+
+-> action.endAction
+
+= music
+
+{name} compose {|||encore} un {!|nouveau} concerto pour {~piano|harpe|violoncelle|hautbois|triangle} et orchestre.
 
 -> action.endAction
 
@@ -458,7 +471,7 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
  -> action.failAction
 }
 
-À l'âge de {age} ans, grâce{scientist>0: à sa carrière,} à son éducation ({education}%) et au soutient de son entourage ({support}%), <>
+À l'âge de {age} ans, grâce{scientist>0: à sa carrière,} à son éducation ({education}%) et au soutien de son entourage ({support}%), <>
 
 ~ temp c = RANDOM(1,2)
 
@@ -512,7 +525,7 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
 À l'âge de {age} ans, {name} souhaite faire un enfant.
 
 + [Bonne idée] 
-  Cela diminue vos ressources (-10%) mais augmente le soutient de votre entourage (+10%).
+  Cela diminue vos ressources matérielles (-10%) mais augmente le soutien de votre entourage (+10%).
   {alter(rich, -10)} {alter(support, 10)}
   ++ [Ok]
 + [Peut-être plus tard]
@@ -526,7 +539,7 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
 À l'âge de {age} ans, {name} a la possiblité de se marier. 
 
 + (married) [Ok] 
-  Cela diminue vos ressources (-5%) mais augmente le soutient (10%) de votre entourage.
+  Cela diminue vos ressources financières (-5%) mais augmente le soutien (10%) de votre entourage.
   {alter(rich, -5)} {alter(support, 10)}
   ++ [Ok]
 + [Non merci]
@@ -541,7 +554,7 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
 
 + [Toujours d'accord pour agir] 
   Vous venez d'augmenter les chances de réaliser une action militante. 
-  <> En revanche la carrière politique sera plus difficile.
+  <> En revanche, la carrière politique sera plus difficile.
   {alter(activist, 20)} {alter(politician, -20)}
   ++ [Ok]
 + [Non merci]
@@ -555,7 +568,7 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
 À l'âge de {age} ans, {name} a la possiblité de changer de pays pour son travail.
 
 + [Le voyage c'est la santé]
-  Le voyage éloigne un peu les proches (Entourage -5%) mais augmente les ressources  (+5%).
+  Le voyage l'éloigne un peu de ses proches (Entourage -5%) mais augmente ses ressources matérielles (+5%).
   {alter(support, -5)} {alter(rich, 5)}
   ++ [Ok]
 + [Non merci]
@@ -567,7 +580,7 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
 À l'âge de {age} ans, {name} a la possiblité de changer de pays pour ses études.
 
 + [Les voyages forment la jeunesse] 
-  Un voyage permet d'apprendre plus  (Education +5%) mais éloigne un peu les proches (Entourage -5%).
+  Un voyage permet d'apprendre plus (Education +5%) mais l'éloigne un peu de ses proches (Entourage -5%).
   {alter(support, -5)} {alter(education, 5)}
   ++ [Ok]
 + [Non merci]
@@ -581,7 +594,7 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
 À l'âge de {age} ans, {name} peut se présenter à l'élection des délégués.
 
 + [C'est une bonne première expérience] 
-  La carrière politique sera facilité, mais les actions militantes plus difficiles.
+  La carrière politique sera facilitée, mais les actions militantes seront désormais plus difficiles à mener.
   {alter(activist, -10)} {alter(politician, 10)}
   ++ [Ok]
 + [Non merci]
@@ -595,7 +608,7 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
 À l'âge de {age} ans, {name} peut se présenter à la mairie de sa commune.
 
 + [D'accord pour agir pour sa commune] 
-  Votre carrière politique progresse mais vous perdez de vue les groupes plus alternatifs.
+  Sa carrière politique progresse mais cela fait perdre de vue les groupes plus alternatifs.
   {alter(activist, -20)} {alter(politician, 20)}
   ++ [Ok]
 + [Non merci]
@@ -609,7 +622,7 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
 À l'âge de {age} ans, {name} a la possibilité de rentrer dans {~une grande école|un cursus universitaire} politique.
 
 + [Bonne idée] 
-  Vous privilégiez le chemin d'une carrière politique en dépit des autres carrières.
+  La carrière politique est privilégiée, en dépit des autres carrières.
   {alter(politician, 25)} {alter(scientist, -5)} {alter(activist, -5)} {alter(artist, -5)} {alter(humanist, -5)}
   ++ [Ok]
 + [Non merci]
@@ -620,10 +633,10 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
 
 {age < 18 or age > 23: -> nextYear}
 
-À l'âge de {age} ans, {name} a la possibilité de rentrer dans une grande école scientifique.
+À l'âge de {age} ans, {name} a la possibilité de rentrer dans {~une grande école|un cursus universitaire} scientifique.
 
 + [Les science avant tout] 
-  Vous privilégiez le chemin d'une carrière scientifique en dépit des autres carrières.
+  {name} privilégie sa carrière scientifique, en dépit des autres carrières.
   {alter(scientist, 25)} {alter(politician, -5)} {alter(activist, -5)} {alter(artist, -5)} {alter(humanist, -5)}
   ++ [Ok]
 + [Non merci]
@@ -637,7 +650,7 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
 À l'âge de {age} ans, {name} a la possibilité de rentrer dans une grande école artistique.
 
 + [L'art pour l'art] 
-  Vous privilégiez le chemin d'une carrière artistique en dépit des autres carrières.
+  {name} privilégie sa carrière artistique, en dépit des autres carrières.
   {alter(artist, 25)} {alter(politician, -5)} {alter(activist, -5)} {alter(scientist, -5)} {alter(humanist, -5)}
   ++ [Ok]
 + [Non merci]
@@ -651,7 +664,7 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
 À l'âge de {age} ans, {name} a la possibilité de rentrer dans une {~université|grande école} de {~philosopihe|littérature}.
 
 + [En avant pour les belles lettres]
-  Vous privilégiez le chemin d'une carrière intellectuelle en dépit des autres carrières.
+  {name} privilégie sa carrière intelectuelle, en dépit des autres carrières.
   {alter(humanist, 25)} {alter(politician, -5)} {alter(activist, -5)} {alter(scientist, -5)} {alter(artist, -3)}
   ++ [Ok]
 + [Non merci]
@@ -680,7 +693,8 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
 <> grand monastère.
 
 + [Bonne idée] 
-  Votre sagesse augmente (+10%) mais vous perdez un peu de soutient de votre entourage (-5%) et apprenez à renoncer à certaines possesions matérielles  (Ressources -5%).
+  La sagesse de {name} augmente (+10%) mais sa retraite loin de tous lui fait perdre de vue plusieurs de ses amis proches (Entourage -5%). 
+  <> Avec un regard plus distancié sur le monde {gender=="F":elle|il} se deleste de certaines possesions matérielles (Ressources -5%).
   {alter(simplicity, 10)} {alter(support, -5)} {alter(rich, -5)}
   ++ [Ok]
 + [Non merci]
@@ -720,7 +734,7 @@ C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
 
 == score ==
 
-Après cette vie vous avez {karma} points de karma.
+Après cette vie, vous avez {karma} points de Karma.
 
 Que souhaitez-vous faire maintenant ?
 

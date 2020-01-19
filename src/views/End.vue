@@ -1,22 +1,30 @@
 <template>
   <div class="end">
-    <h1>Bravo !!</h1>
-    <h2>Vous avez quitté le cycle des réincarnations.</h2>
+    <h1>Félicitations !</h1>
     <p>
-      Vous allez pouvoir passer au niveau l'élévation spirituelle suivant. Vous
-      avez eu besoin de
+      Karma manager v1.2 est heureux de vous annoncer que vous avez obtenu plus
+      42 points de Karma et que vous avez quitté le cycle des réincarnations en
+      accédant à un niveau niveau d'élévation spirituelle supérieur.
+    </p>
+    <p>
+      Pour information, vous avez eu besoin de
       <span class="strong">{{ state.lifeCount }}</span> réincarnations pour
       réaliser cet objectif. Comparez votre score avec vos âm(i)es.
     </p>
-    <router-link to="/">Je peux faire mieux</router-link>
+    <router-link to="/intro">Je veux faire mieux</router-link>
+    <p>
+      N'hésitez pas à partager votre expérience avec Karma manager v1.2 sur les
+      réseaux astraux, et, pour votre nouvel état, nous vous recommandons
+      d'utiliser l'application Nirvana manager v2.3.
+    </p>
   </div>
 </template>
 
 <script>
-import store from "@/store";
+import store from '@/store';
 
 export default {
-  name: "intro",
+  name: 'intro',
   data() {
     return {
       state: store.state

@@ -2,28 +2,35 @@
   <div class="intro">
     <h1>Karma manager v1.2</h1>
     <p>
-      Bienvenue Ame n°{{ number }}, dans votre application de gestion de
-      réincarnation. Cette application vous permet de gérer l'évolution de votre
-      carrière en tant qu'âme.
+      Chère Âme n°{{ number }}, <br />Bienvenue dans votre application de
+      gestion de réincarnation.
     </p>
     <p>
-      Avant d'incarner un corps, vous devez choisir la famille qui vous convient
-      le mieux. Attention, vous n'avez que trois possibilités. Faites le bon
-      choix.
+      En tant qu'âme, comme vous le savez, vous êtes inscrit dans un cycle de
+      réincarnations. À chaque incarnation, cette application vous permet de
+      guider la vie de celui que vous incarnez&nbsp;: plus les réalisations de
+      la personne seront bonnes, plus vous capitaliserez de points de Karma.
     </p>
     <p>
-      Ensuite, vous pourrez intervenir dans certains choix de vie de votre
-      incarnation et suivre les différentes actions importantes qu'elle
-      effectuera. Faites les bons choix afin d'orienter votre incarnation vers
-      les meilleurs actions.
+      Une fois un niveau de Karma satisfaisant atteint -&nbsp;c'est-à-dire
+      42&nbsp;- vous pouvez quitter le cycle des renaissances et accéder à la «
+      libération », « nirvana » ou encore « Moksha », appelez ça comme vous le
+      souhaitez.
     </p>
     <p>
-      À chaque incarnation, vous accumulez du <em>karma</em> en fonction des
-      actions de votre incarnation. Si vous arrivez à totaliser 42 points de
-      karma aux termes de plusieurs incarnations, vous pourrez sortir de votre
-      condition d'âme et passer à l'état supérieur.
+      À chaque fois, avant de vous incarner, Karma manager v1.2 vous offre la
+      possibilité de choisir la famille qui vous convient le mieux. Attention,
+      comme dans les photomatons, vous n'avez droit qu'a trois possibilités. Ne
+      soyez pas trop exigeant, mais faites le bon choix.
     </p>
-    <h3>Bon courage.</h3>
+    <p>
+      Ensuite, vous interviendrez dans certains choix de vie de votre
+      incarnation afin d'orienter les actions qu'elle pourra réaliser.
+    </p>
+    <h3>
+      Karma manager v1.2 compte sur vous pour rendre le monde meilleur et vous
+      souhaite de belles réincarnations.
+    </h3>
     <router-link to="/story">Commencer à gérer mon Karma</router-link>
   </div>
 </template>
