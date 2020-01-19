@@ -23,7 +23,7 @@
         <ul class="choices">
           <li>
             <a class="choice grow" href="#" @click.prevent="restart"
-              >Vous réincarner</a
+              >L'application vous propose de vous réincarner</a
             >
           </li>
           <li v-if="state.currentVariables['karma'] >= 42">

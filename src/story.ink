@@ -3,7 +3,7 @@ VAR education = 0
 VAR support = 0
 VAR simplicity = 0
 
-VAR debug = false
+VAR debug = true
 
 VAR age = 0
 VAR karma = 0
@@ -54,7 +54,7 @@ LIST tags = nothing
 
 == function isDead(currentAge) ==
 { 
-  - currentAge < 1:
+  /*- currentAge < 1:
     ~ return (RANDOM(1, 177) == 1)
   - currentAge < 4:
     ~ return (RANDOM(1, 4386) == 1)
@@ -65,7 +65,7 @@ LIST tags = nothing
   - currentAge <= 24:
     ~ return (RANDOM(1, 1215) == 1)
   - currentAge <= 34:
-    ~ return (RANDOM(1, 663) == 1)
+    ~ return (RANDOM(1, 663) == 1)*/
   - currentAge <= 44:
     ~ return (RANDOM(1, 279) == 1)
   - currentAge <= 54:
@@ -110,7 +110,7 @@ LIST tags = nothing
   - rich_ < 5:
     ~ return "qui ont du mal à terminer leurs fins de mois"
   - rich_ < 15:
-    ~ return "issue de la classe moyenne"
+    ~ return "issus de la classe moyenne"
   - rich_ < 25:
     ~ return "qui possèdent une aisance materielle certaine"
   - else:
@@ -711,17 +711,31 @@ C'est une occasion ratée, mais la prochaine sera sans doute la bonne.
 
 == death ==
 
-{name} meurt à l'âge de {age} ans. <>
-<> C'est <>
-{ 
-- age<5:
-  {~un accident|une maladie infantile}
-- age>65:
-  {~un accident|la maladie|la veillesse}
-- else :
-  {~un accident|la maladie}
+{name} meurt à l'âge de {age} ans
+
+{ shuffle:
+  - <>. Cause de la mort : présence d'un nénuphar dans les poumons.
+  - <> d'une mort aussi grotesque que tragique en s'étouffant alors qu'{gender=="F":elle|il} avalait un bretzel.
+  - <>. Cause de la mort : l'horloge mécanique qui remplaçait son cœur s'est arrétée.
+  - <>. Cause de la mort : grève de la faim prolongée. (Karma + 8) {alter(karma, 8)}
+  - <>. Cause de la mort : incertaine, les enquêteurs poursuivent leur enquête.
+  - <>. Cause de la mort : lors d'un selfie {~en haut d'une falaise|en haut d'une tour|près d'un {~lion|serpent|éléphant}|au milieu d'une autoroute}.
+  - <> lors d'une représentation du Malade imaginaire de Molière.
+  - <> en changeant une ampoule alors qu'{gender=="F":elle|il} était dans son bain.
+  - <>. Cause de la mort : chute d'un piano du 4ème étage.
+  - <>. Cause de la mort : chute d'une tortue nommée Eschyle sur sa tête.
+  - <> en testant son invention {~du costume parachute|du gilet pare-balles sexy|du taser anti-émeutes}.
+  - <> en s'approchant trop près d'une éruption volcanique.
+  - <> dans son sommeil.
+  - <> lors d'une partie de cache-cache. Ce sont les éboueurs qui ont retrouvé le corps. On peut affirmer que c'est {gender=="F":la gagnant|le gagnant}.
+  - <>. Cause de la mort : assassiné{gender=="F":e} en prenant une douche.
+  - <>. Cause de la mort : une météorite.
+  - <>. Cause de la mort : {age>80:veillesse|par amour}.
+  - <>. Cause de la mort : l'ennui.
+  - <> en urinant sur une cloture électrique.
+  - <> en enflamant ses pets.
+  - <> au moment où {gender=="F":elle|il} plaçait le mot « veinard » au Scrable.
 }
-<> qui l'a emporté{gender=="F":e}.
 
 + [Dommage]
   -> score
@@ -734,9 +748,9 @@ C'est une occasion ratée, mais la prochaine sera sans doute la bonne.
 
 == score ==
 
-Après cette vie, vous avez {karma} points de Karma.
+Après cette vie, Karma manager v1.2 vous informe que vous avez {karma} point{karma>0:s} de Karma.
 
-Que souhaitez-vous faire maintenant ?
+Que souhaitez-vous faire ?
 
   -> END
 
