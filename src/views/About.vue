@@ -2,7 +2,7 @@
   <div class="about">
     <h1>Karma manager v1.2</h1>
     <p>
-      Réalisé par Jérémie Pardou pour le concours de fiction interactive
+      Ce jeu est réalisé dans le cadre du concours de fiction interactive
       organisé par
       <a href="http://www.fiction-interactive.fr/"
         >http://www.fiction-interactive.fr/</a
@@ -10,7 +10,7 @@
       pour l'année 2020.
     </p>
     <p>
-      Vous pouvez retrouver le code source qui a permis de réaliser ce jeu à
+      Vous pouvez retrouver le code source qui a permis de le réaliser à
       l'adresse
       <a href="https://github.com/jrmi/karma-manager"
         >https://github.com/jrmi/karma-manager</a

@@ -3,7 +3,7 @@ VAR education = 0
 VAR support = 0
 VAR simplicity = 0
 
-VAR debug = true
+VAR debug = false
 
 VAR age = 0
 VAR karma = 0
@@ -63,9 +63,9 @@ LIST tags = nothing
   - currentAge <= 24:
     ~ return (RANDOM(1, 1908) == 1)
   - currentAge <= 24:
-    ~ return (RANDOM(1, 1215) == 1)
+    ~ return (RANDOM(1, 1215) == 1)*/
   - currentAge <= 34:
-    ~ return (RANDOM(1, 663) == 1)*/
+    ~ return false
   - currentAge <= 44:
     ~ return (RANDOM(1, 279) == 1)
   - currentAge <= 54:
@@ -120,37 +120,37 @@ LIST tags = nothing
 == function descEducationParent(educ) ==
 {
   - educ < 5:
-    ~ return "ils n'en ont pas"
+    ~ return "Ils ont tous les deux préféré l'école buissonière aux longues heures d'étude obligatoire"
   - educ < 15:
-    ~ return "ils ont suivi le cursus habituel"
+    ~ return "Ils ont suivi le cursus habituel de la maternelle au lycée"
   - educ < 25:
-    ~ return "ils ont fait des études longues"
+    ~ return "Ils ont fait des études longues : {~chimie|biologie végétale|informatique|mécanique|électronique|droit|mathématiques} pour maman et {~anthropologie|anglais|sciences politiques|cinéma|art dramatique|génie électronique} pour papa"
   - else:
-    ~ return "ils conaissent tout sur tout"
+    ~ return "Ils connaissent tout sur tout et sont interdits de jeux télévisés de culture générale parce qu'ils gagnent à chaque fois"
 }
 
 == function descSupportParent(support_) ==
 {
   - support_ < 5:
-    ~ return "sont peu attentifs à leurs enfants"
+    ~ return "Très casaniers, ils n'aiment pas sortir et ont très peu d'amis"
   - support_ < 15:
-    ~ return "font le minimum pour leur famille"
+    ~ return "Ils ont sympathisé avec les voisins et les collègues qu'ils invitent une fois par mois"
   - support_ < 25:
-    ~ return "considèrent que la famille est importante"
+    ~ return "De nature sociable, ils aiment sortir en semaine. Le week-end est consacré à la vie familiale"
   - else:
-    ~ return "ne rateraient pour rien au monde une réunion de famille"
+    ~ return "Ils ne rateraient pour rien au monde une réunion de famille. Cela ne les empêche pas d'avoir par ailleurs des amis qui peuvent compter sur eux"
 }
 
 == function descSimplicityParent(support_) ==
 {
   - support_ < 5:
-    ~ return "irrespectueux"
+    ~ return "On dit d'eux qu'ils sont misanthropes et mauvaise langue"
   - support_ < 15:
-    ~ return "peu respecteux"
+    ~ return "Ils sont du genre à ne pas ramasser les crottes de leur chien mais à râler sur ceux qui ne démarrent pas assez vite au feu rouge"
   - support_ < 25:
-    ~ return "sages"
+    ~ return "Ils aident les personnes âgées à traverser la route"
   - else:
-    ~ return "très sages"
+    ~ return "Ils parlent peu mais agissent au quotidien pour améliorer leur environnement : tri des déchets, achats responsables, dons à des ONG, …"
 }
 
 == function test(threshold) ==
@@ -209,9 +209,9 @@ Choisissez vos parents. <>
 {second:Proposition finale :}
 
 {getGirlName()} et {getBoyName()} {getName()} sont deux parents {descRichParent(rich)}.
-<> En ce qui concerne leur éducation, {descEducationParent(education)}. 
-<> Ils {descSupportParent(support)}.
-<> Ils sont {descSimplicityParent(simplicity)} avec autrui.
+<> {descEducationParent(education)}. 
+<> {descSupportParent(support)}.
+<> {descSimplicityParent(simplicity)}.
 
 Voulez-vous vous incarner dans cette famille ?
 
@@ -323,8 +323,9 @@ C'est une occasion ratée, mais la prochaine sera sans doute la bonne.
 {debug: <> --ecology}
 
 {test((education+rich)/2 + activist) : 
-  À l'âge de {age} ans, le manque d'éducation ({education}%) et de ressources matérielles ({rich}%) empêchent 
-  <> {name} de réaliser une action militante. Dommage…
+  À l'âge de {age} ans, {name} aurait pu mener à bien une action militante.
+  <> Cependant, il eût fallu avoir un peu d'argent de côté, ce qui n'était pas son cas (Richesses {rich}%).
+  <> De plus, son CV n'aurait pas été sélectionné, faute d'un cursus suffisant. (Education {education}%).
  -> action.failAction
 }
 
@@ -353,8 +354,9 @@ C'est une occasion ratée, mais la prochaine sera sans doute la bonne.
 {debug: <> --politic}
 
 {test((support+rich)/2 + politician):  
-  À l'âge de {age} ans, le manque de soutien de ses proches ({support}%) ainsi que ses difficultés matérielles ({rich}%) ne permettent pas à 
-  <> {name} de réaliser l'action politique {gender=="F":qu'elle|qu'il} souhaitait.
+  À l'âge de {age} ans, {name} aurait pu embrasser une carrière politique.
+  <> Cependant, il eût fallu avoir un peu d'argent de côté, ce qui n'était pas son cas (Richesses {rich}%).
+  <> De plus elle n'a pas pu rencontrer les bonnes personnes au bon moment (Entourage {support}%).
  -> action.failAction
 }
 
@@ -390,8 +392,9 @@ C'est une occasion ratée, mais la prochaine sera sans doute la bonne.
 {debug: <> --human}
 
 {test((support+simplicity)/2 + humanist):  
-  À l'âge de {age} ans, la faiblesse de son entourage ({support}%) et de sa sagesse ({simplicity}%) ne permettent pas à 
-  <> {name} de s'engager dans une action humanitaire.
+  À l'âge de {age} ans, {name} aurait pu s'engager dans une action humanitaire.
+  <> Malheureusement elle n'a pas pu rencontrer les bonnes personnes (Entourage {support}%). 
+  <> Par ailleurs, ce type d'engagement demande une ouverture d'esprit qu'elle n'avait pas (Sagesse {simplicity}%)
  -> action.failAction
 }
 
@@ -408,20 +411,26 @@ C'est une occasion ratée, mais la prochaine sera sans doute la bonne.
 
 {name} met en place une association humanitaire pour <>
 { shuffle:
- - accueillir les enfants abandonnés
- - réduire les inégalités homme/femme
- - faire avancer la recherche sur les maladies auto-immunes
- - éviter le décrochage scolaire
- - lutter contre la faim dans le monde
- - améliorer le taux d'alphabétisation dans le monde
- - venir en aide aux réfugiés {~|climatiques} 
-}.
+ - accueillir les enfants abandonnés.
+ - réduire les inégalités homme/femme.
+ - faire avancer la recherche sur les maladies auto-immunes.
+ - éviter le décrochage scolaire.
+ - lutter contre la faim dans le monde.
+ - améliorer le taux d'alphabétisation dans le monde.
+ - venir en aide aux réfugiés {~|climatiques}.
+}
 
 -> action.endAction
 
 = mission
 
-{name} anime un {|nouveau} projet de création d'école pour enfants {~défavorisés|abandonnés|maltraités|en difficultés}.
+{ shuffle:
+  - {name} anime un {|nouveau} projet de création d'école pour enfants {~défavorisés|abandonnés|maltraités|en difficultés}.
+  - {name} anime un atelier de réflexion sur le traitement des animaux dans notre société.
+  - {name} crée une association d'aide aux devoirs.
+  - {name} organise un ramassage scolaire coopératif en rosalie.
+  - {name} devient le président de l'association des jardins partagés du quartier.
+}
 
 -> action.endAction
 
@@ -430,34 +439,21 @@ C'est une occasion ratée, mais la prochaine sera sans doute la bonne.
 {debug: <> --art}
 
 {test((simplicity + education) / 2 + artist): 
-  À l'âge de {age} ans, son manque d'éducation ({education}%) et son manque de discernement ({simplicity}%) font échouer les  
-  <> projet artistiques de {name}.
- -> action.failAction
+  À l'âge de {age} ans, les projets artistiques de {name} échouent.
+  <> Si seulement {gender=="F":elle|il} avait accepté de suivre la formation de dessin du coin de la rue (Education {education}%).
+  <> Mais cela lui aurait demandé de sortir de sa zone de confort (Sagesse {simplicity}%).
+  -> action.failAction
 }
 
 À l'âge de {age} ans, grâce{artist>0: à sa carrière,} à son éducation ({education}%) et à sa sagesse ({simplicity}%), <>
 
 { shuffle:
-  - -> paint
-  - -> building
-  - -> music
+  - {name} peint {|||encore} une {|nouvelle|série} oeuvre picturale {~révolutionnant le genre|d'un nouveau genre|exposée dans plusieurs musées}.
+  - {name} compose {|||encore} un {!|nouveau} concerto pour {~piano|harpe|violoncelle|hautbois|triangle} et orchestre.
+  - {name} fait construire {~un immeuble en bois zéro emission|une un parc éolien|un éco-village}.
+  - {name} est à l'initiative d'une fresque murale sur le thème {~« différence et vivre ensemble »|« la cité de demain »|« liberté, égalité, fraternité »|« nos héros du quotidien »}
+  - {name} est le chanteur engagé de « Pense à ton kid », tube de l'été.
 }
-
-= paint
-
-{name} peint {|||encore} une {|nouvelle|série} oeuvre picturale {~révolutionnant le genre|d'un nouveau genre|exposée dans plusieurs musées}.
-
--> action.endAction
-
-= music
-
-{name} compose {|||encore} un {!|nouveau} concerto pour {~piano|harpe|violoncelle|hautbois|triangle} et orchestre.
-
--> action.endAction
-
-= building
-
-{name} fait construire {~un immeuble en bois zéro emission|une un parc éolien|un éco-village}.
 
 -> action.endAction
 
@@ -466,35 +462,22 @@ C'est une occasion ratée, mais la prochaine sera sans doute la bonne.
 {debug: <> --science}
 
 {test((support + education) / 2 + scientist): 
-  À l'âge de {age} ans, la faiblesse de son éducation ({education}%) et de son entourage ({support}%) ne permettent pas à 
-  <> {name} d'innover dans le domaine des sciences.
+  À l'âge de {age} ans, {name} aurait pu innover dans son domaine scientifique.
+  <> Dommage qu'{gender=="F":elle|il} ait séché un peu trop souvent lors de sa formation (Education {education}%).
+  <> De plus, la recherche demande d'avoir un réseaux social développé, et pas seulement pour les soirées (Entourage {support}%).
  -> action.failAction
 }
 
 À l'âge de {age} ans, grâce{scientist>0: à sa carrière,} à son éducation ({education}%) et au soutien de son entourage ({support}%), <>
 
-~ temp c = RANDOM(1,2)
-
-{ c:
-  - 1: -> medical
-  - 2: -> energy
-}
-
-= medical
-
 {name} invente <>
 { shuffle:
-  - une nouvelle manière de soigner les infections sans utiliser d'anti-biotique
-  - une nouvelle thérapie contre le sida accessible aux pays emmergeants
-  - une manière de soulager les douleurs sans effets secondaires
+  - {name} invente une nouvelle manière de soigner les infections sans utiliser d'antibiotiques.
+  - {name} invente une nouvelle thérapie contre le sida accessible aux pays émergeants.
+  - {name} invente une manière de soulager les douleurs sans effets secondaires.
+  - {name} conçoit une nouvelle manière de stocker l'energie qui permet de mieux utiliser les sources d'energies renouvelables.
+  - {name} invente une prise en compte globale du patient.
 }
-
--> action.endAction
-
-= energy
-
-{name} conçoit une nouvelle manière de stocker l'energie qui permet de mieux 
-<> utiliser les sources d'energies renouvelables.
 
 -> action.endAction
 
