@@ -203,6 +203,7 @@ LIST tags = nothing
 ~ simplicity = 0
 ~ initCarac(rich, education, support, simplicity, 40 + karma)
 
+Choisissez vos parents. <>
 {not first:Première proposition :}
 {first and not second:Deuxième proposition :}
 {second:Proposition finale :}
@@ -303,15 +304,31 @@ Vous allez maintenant suivre la vie de {name}.
 
 = endAction
 
+Grâce à l'action de votre incarnation, vous gagnez du Karma (+8).
 {alter(karma, 8)}
 
 + [Ok]
   -> nextYear
 
+= failAction
+
+C'est une occasion ratée, mais peut-être que la prochaine fois sera la bonne.
+
++ [Ok] 
+   -> nextYear
+
 
 == ecology ==
 
-{test((education+rich)/2 + activist) : -> nextYear}
+{debug: <> --ecology}
+
+{test((education+rich)/2 + activist) : 
+  À l'âge de {age} ans, la faiblesse de son éducation ({education}%) et de ses ressources ({rich}%) empêchent 
+  <> {name} de réaliser une action militante.
+ -> action.failAction
+}
+
+À l'âge de {age} ans, grâce{activist>0: à sa carrière,} à son éducation ({education}%) et à ses ressources ({rich}%), <>
 
 { shuffle:
   - -> cleanOcean
@@ -320,20 +337,28 @@ Vous allez maintenant suivre la vie de {name}.
 
 = cleanOcean
 
-À l'age de {age} ans, {name} organise {|une nouvelle|pour la troisième fois} une opération <>
+{name} organise {|une nouvelle|pour la troisième fois} une opération <>
 {~internationnale|mondiale|générale} de nettoyage des océans {||et c'est un grand succès}.
 
 -> action.endAction
 
 = lessGarbage
 
-À l'age de {age} ans, {name} améliore {|encore plus|toujours plus} les embalages afin de générer moins de déchets.
+{name} améliore {|encore plus|toujours plus} les embalages afin de générer moins de déchets.
 
 -> action.endAction
 
 == politicAction ==
 
-{test((support+rich)/2 + politician): -> nextYear}
+{debug: <> --politic}
+
+{test((support+rich)/2 + politician):  
+  À l'âge de {age} ans, la faiblesse de son entourage ({support}%) et de ses ressources ({rich}%) ne permettent pas à 
+  <> {name} de réaliser l'action politique {gender=="F":qu'elle|qu'il} souhaitait.
+ -> action.failAction
+}
+
+À l'âge de {age} ans, grâce{politician>0: à sa carrière,} au soutient de son entourage ({support}%) et à ses ressources ({rich}%), <>
 
 ~ temp c = RANDOM(1,2)
 
@@ -344,13 +369,13 @@ Vous allez maintenant suivre la vie de {name}.
 
 = peace
 
-À l'age de {age} ans, {name} fait signer un traité de paix {~en Irak|en Iran|au Soudan|en Syrie|au Malie|au Pakistan}.
+{name} fait signer un traité de paix {~en Irak|en Iran|au Soudan|en Syrie|au Malie|au Pakistan}.
 
 -> action.endAction
 
 = lawImmigration
 
-À l'age de {age} ans, {name} fait voter une nouvelle Loi pour protéger les <>
+{name} fait voter une nouvelle Loi pour protéger les <>
 {shuffle:
   - immigrés
   - femmes batues
@@ -364,7 +389,15 @@ Vous allez maintenant suivre la vie de {name}.
 
 == human ==
 
-{test((support+simplicity)/2 + humanist): -> nextYear}
+{debug: <> --human}
+
+{test((support+simplicity)/2 + humanist):  
+  À l'âge de {age} ans, la faiblesse de son entourage ({support}%) et de sa sagesse ({simplicity}%) ne permettent pas à 
+  <> {name} de s'engager dans une action humanitaire.
+ -> action.failAction
+}
+
+À l'âge de {age} ans, grâce{humanist>0: à sa carrière,} au soutient de son entourage ({support}%) et à sa sagesse ({simplicity}%), <>
 
 ~ temp c = RANDOM(1,2)
 
@@ -375,21 +408,28 @@ Vous allez maintenant suivre la vie de {name}.
 
 = assos
 
-
-À l'age de {age} ans, {name} met en place une association humanitaire pour <>
+{name} met en place une association humanitaire pour <>
 {~sauver les enfants abandonnés|soigner les femmes maltraitées|aider les victimes de viols|accompagner les immigrés}.
 
 -> action.endAction
 
 = mission
 
-À l'age de {age} ans, {name} anime un {|nouveau} projet de création d'école pour enfants {~défavorisés|abandonnés|maltraités|en difficultés}.
+{name} anime un {|nouveau} projet de création d'école pour enfants {~défavorisés|abandonnés|maltraités|en difficultés}.
 
 -> action.endAction
 
 == art ==
 
-{test((simplicity + education) / 2):  -> nextYear}
+{debug: <> --art}
+
+{test((simplicity + education) / 2 + artist): 
+  À l'âge de {age} ans, la faiblesse de son éducation ({education}%) et de sa sagesse ({simplicity}%) font échouer les  
+  <> projet artistiques de {name}.
+ -> action.failAction
+}
+
+À l'âge de {age} ans, grâce{artist>0: à sa carrière,} à son éducation ({education}%) et à sa sagesse ({simplicity}%), <>
 
 { shuffle:
   - -> paint
@@ -398,19 +438,27 @@ Vous allez maintenant suivre la vie de {name}.
 
 = paint
 
-À l'age de {age} ans, {name} créé {|||encore} une {|nouvelle|série} oeuvre picturale {~révolutionnant le genre|d'un nouveau genre|exposée dans plusieurs musées}.
+{name} créé{gender=="F":e} {|||encore} une {|nouvelle|série} oeuvre picturale {~révolutionnant le genre|d'un nouveau genre|exposée dans plusieurs musées}.
 
 -> action.endAction
 
 = building
 
-À l'age de {age} ans, {name} fait construire {~un immeuble en bois zéro emission|une un parc éolien|un éco-village}.
+{name} fait construire {~un immeuble en bois zéro emission|une un parc éolien|un éco-village}.
 
 -> action.endAction
 
 == science ==
 
-{test((support + education) / 2 + scientist):  -> nextYear}
+{debug: <> --science}
+
+{test((support + education) / 2 + scientist): 
+  À l'âge de {age} ans, la faiblesse de son éducation ({education}%) et de son entourage ({support}%) ne permettent pas à 
+  <> {name} d'innover dans le domaine des sciences.
+ -> action.failAction
+}
+
+À l'âge de {age} ans, grâce{scientist>0: à sa carrière,} à son éducation ({education}%) et au soutient de son entourage ({support}%), <>
 
 ~ temp c = RANDOM(1,2)
 
@@ -421,7 +469,7 @@ Vous allez maintenant suivre la vie de {name}.
 
 = medical
 
-À l'age de {age} ans,  {name} invente <>
+{name} invente <>
 { shuffle:
   - une nouvelle manière de soigner les infections sans utiliser d'anti-biotique
   - une nouvelle thérapie contre le sida accessible aux pays emmergeants
@@ -432,7 +480,8 @@ Vous allez maintenant suivre la vie de {name}.
 
 = energy
 
-À l'age de {age} ans, {name} conçoit une nouvelle manière de stocker l'energie qui permet de mieux utiliser les sources d'energies renouvelables.
+{name} conçoit une nouvelle manière de stocker l'energie qui permet de mieux 
+<> utiliser les sources d'energies renouvelables.
 
 -> action.endAction
 
@@ -458,11 +507,14 @@ Vous allez maintenant suivre la vie de {name}.
 
 = child
 
-{age < 20: -> nextYear}
+{age < 20 or age > 52: -> nextYear}
 
-À l'age de {age} ans, {name} souhaite faire un enfant.
+À l'âge de {age} ans, {name} souhaite faire un enfant.
 
-+ [Bonne idée] {alter(rich, -5)} {alter(support, 5)}
++ [Bonne idée] 
+  Cela diminue vos ressources (-10%) mais augmente le soutient de votre entourage (+10%).
+  {alter(rich, -10)} {alter(support, 10)}
+  ++ [Ok]
 + [Peut-être plus tard]
 
 - -> endEvent
@@ -471,9 +523,12 @@ Vous allez maintenant suivre la vie de {name}.
 
 {age < 20 or married: -> nextYear}
 
-À l'age de {age} ans, {name} a la possiblité de se marier.
+À l'âge de {age} ans, {name} a la possiblité de se marier. 
 
-+ (married) [Ok] {alter(rich, -5)} {alter(support, 10)}
++ (married) [Ok] 
+  Cela diminue vos ressources (-5%) mais augmente le soutient (10%) de votre entourage.
+  {alter(rich, -5)} {alter(support, 10)}
+  ++ [Ok]
 + [Non merci]
 
 - -> endEvent
@@ -482,9 +537,13 @@ Vous allez maintenant suivre la vie de {name}.
 
 {age < 18: -> nextYear}
 
-À l'age de {age} ans, on propose à {name} de rejoindre le groupe militant "{~les ecoloWarrior|sauvons les dauphins|actions contre les pollueurs}".
+À l'âge de {age} ans, on propose à {name} de rejoindre le groupe militant "{~les ecoloWarrior|sauvons les dauphins|actions contre les pollueurs}".
 
-+ [Toujours d'accord pour agir] {alter(activist, 10)} {alter(politician, -10)}
++ [Toujours d'accord pour agir] 
+  Vous venez d'augmenter les chances de réaliser une action militante. 
+  <> En revanche la carrière politique sera plus difficile.
+  {alter(activist, 20)} {alter(politician, -20)}
+  ++ [Ok]
 + [Non merci]
 
 - -> endEvent
@@ -493,18 +552,24 @@ Vous allez maintenant suivre la vie de {name}.
 
 {age < 25: -> studyTravel}
 
-À l'age de {age} ans, {name} a la possiblité de changer de pays pour son travail.
+À l'âge de {age} ans, {name} a la possiblité de changer de pays pour son travail.
 
-+ [Le voyage c'est la santé] {alter(support, -5)} {alter(rich, 5)}
++ [Le voyage c'est la santé]
+  Le voyage éloigne un peu les proches (Entourage -5%) mais augmente les ressources  (+5%).
+  {alter(support, -5)} {alter(rich, 5)}
+  ++ [Ok]
 + [Non merci]
 
 - -> endEvent
 
 = studyTravel
 
-À l'age de {age} ans, {name} a la possiblité de changer de pays pour ses études.
+À l'âge de {age} ans, {name} a la possiblité de changer de pays pour ses études.
 
-+ [Les voyages forment la jeunesse] {alter(support, -3)} {alter(education, 3)}
++ [Les voyages forment la jeunesse] 
+  Un voyage permet d'apprendre plus  (Education +5%) mais éloigne un peu les proches (Entourage -5%).
+  {alter(support, -5)} {alter(education, 5)}
+  ++ [Ok]
 + [Non merci]
 
 - -> endEvent
@@ -513,9 +578,12 @@ Vous allez maintenant suivre la vie de {name}.
 
 {age < 7 or age > 18: -> nextYear}
 
-À l'age de {age} ans, {name} peut se présenter à l'élection des délégués.
+À l'âge de {age} ans, {name} peut se présenter à l'élection des délégués.
 
-+ [C'est une bonne première expérience] {alter(activist, -3)} {alter(politician, 3)}
++ [C'est une bonne première expérience] 
+  La carrière politique sera facilité, mais les actions militantes plus difficiles.
+  {alter(activist, -10)} {alter(politician, 10)}
+  ++ [Ok]
 + [Non merci]
 
 - -> endEvent
@@ -524,9 +592,12 @@ Vous allez maintenant suivre la vie de {name}.
 
 {age < 22 : -> nextYear}
 
-À l'age de {age} ans, {name} peut se présenter à la mairie de sa commune.
+À l'âge de {age} ans, {name} peut se présenter à la mairie de sa commune.
 
-+ [D'accord pour agir pour sa commune] {alter(activist, -10)} {alter(politician, 10)}
++ [D'accord pour agir pour sa commune] 
+  Votre carrière politique progresse mais vous perdez de vue les groupes plus alternatifs.
+  {alter(activist, -20)} {alter(politician, 20)}
+  ++ [Ok]
 + [Non merci]
 
 - -> endEvent
@@ -535,9 +606,12 @@ Vous allez maintenant suivre la vie de {name}.
 
 {age < 18 or age > 23: -> nextYear}
 
-À l'age de {age} ans, {name} a la possibilité de rentrer dans {~une grande école|un cursus universitaire} politique.
+À l'âge de {age} ans, {name} a la possibilité de rentrer dans {~une grande école|un cursus universitaire} politique.
 
-+ [Bonne idée] {alter(politician, 15)} {alter(scientist, -5)} {alter(activist, -5)} {alter(artist, -5)} {alter(humanist, -5)}
++ [Bonne idée] 
+  Vous privilégiez le chemin d'une carrière politique en dépit des autres carrières.
+  {alter(politician, 25)} {alter(scientist, -5)} {alter(activist, -5)} {alter(artist, -5)} {alter(humanist, -5)}
+  ++ [Ok]
 + [Non merci]
 
 - -> endEvent
@@ -546,9 +620,12 @@ Vous allez maintenant suivre la vie de {name}.
 
 {age < 18 or age > 23: -> nextYear}
 
-À l'age de {age} ans, {name} a la possibilité de rentrer dans une grande école scientifique.
+À l'âge de {age} ans, {name} a la possibilité de rentrer dans une grande école scientifique.
 
-+ [Les science avant tout] {alter(scientist, 15)} {alter(politician, -5)} {alter(activist, -5)} {alter(artist, -5)} {alter(humanist, -5)}
++ [Les science avant tout] 
+  Vous privilégiez le chemin d'une carrière scientifique en dépit des autres carrières.
+  {alter(scientist, 25)} {alter(politician, -5)} {alter(activist, -5)} {alter(artist, -5)} {alter(humanist, -5)}
+  ++ [Ok]
 + [Non merci]
 
 - -> endEvent
@@ -557,9 +634,12 @@ Vous allez maintenant suivre la vie de {name}.
 
 {age < 18 or age > 23: -> nextYear}
 
-À l'age de {age} ans, {name} a la possibilité de rentrer dans une grande école artistique.
+À l'âge de {age} ans, {name} a la possibilité de rentrer dans une grande école artistique.
 
-+ [L'art pour l'art] {alter(artist, 15)} {alter(politician, -5)} {alter(activist, -5)} {alter(scientist, -5)} {alter(humanist, -5)}
++ [L'art pour l'art] 
+  Vous privilégiez le chemin d'une carrière artistique en dépit des autres carrières.
+  {alter(artist, 25)} {alter(politician, -5)} {alter(activist, -5)} {alter(scientist, -5)} {alter(humanist, -5)}
+  ++ [Ok]
 + [Non merci]
 
 - -> endEvent
@@ -568,9 +648,12 @@ Vous allez maintenant suivre la vie de {name}.
 
 {age < 18 or age > 23: -> nextYear}
 
-À l'age de {age} ans, {name} a la possibilité de rentrer dans une grande école de littérature.
+À l'âge de {age} ans, {name} a la possibilité de rentrer dans une {~université|grande école} de {~philosopihe|littérature}.
 
-+ [En avant pour les belles lettres] {alter(humanist, 15)} {alter(politician, -5)} {alter(activist, -5)} {alter(scientist, -5)} {alter(artist, -3)}
++ [En avant pour les belles lettres]
+  Vous privilégiez le chemin d'une carrière intellectuelle en dépit des autres carrières.
+  {alter(humanist, 25)} {alter(politician, -5)} {alter(activist, -5)} {alter(scientist, -5)} {alter(artist, -3)}
+  ++ [Ok]
 + [Non merci]
 
 - -> endEvent
@@ -579,9 +662,12 @@ Vous allez maintenant suivre la vie de {name}.
 
 {age < 18 or age > 25 : -> nextYear}
 
-À l'age de {age} ans, on propose à {name} d'aller faire une mission humanitaire à l'étranger.
+À l'âge de {age} ans, on propose à {name} d'aller faire une mission humanitaire à l'étranger.
 
-+ [Bonne idée] {alter(activist, 5)} {alter(politician, -5)}
++ [Bonne idée] 
+  Les chances de faire une action militante augmentent mais la carrière politique sera plus difficile.
+  {alter(activist, 20)} {alter(politician, -20)}
+  ++ [Ok]
 + [Non merci]
 
 - -> endEvent
@@ -590,15 +676,19 @@ Vous allez maintenant suivre la vie de {name}.
 
 {age < 18 : -> nextYear}
 
-À l'age de {age} ans, on propose à {name} d'aller faire une retraite spirituelle dans un 
+À l'âge de {age} ans, on propose à {name} d'aller faire une retraite spirituelle dans un 
 <> grand monastère.
 
-+ [Bonne idée] {alter(simplicity, 5)} {alter(support, -3)} {alter(rich, -3)}
++ [Bonne idée] 
+  Votre sagesse augmente (+10%) mais vous perdez un peu de soutient de votre entourage (-5%) et apprenez à renoncer à certaines possesions matérielles  (Ressources -5%).
+  {alter(simplicity, 10)} {alter(support, -5)} {alter(rich, -5)}
+  ++ [Ok]
 + [Non merci]
 
 - -> endEvent
 
 = endEvent
+
 
 -> nextYear
 
@@ -607,8 +697,7 @@ Vous allez maintenant suivre la vie de {name}.
 
 == death ==
 
-{gender=="F": {name} est morte à l'âge de {age} ans.} <>
-{gender=="M": {name} est mort à l'âge de {age} ans.} <>
+{name} meurt à l'âge de {age} ans. <>
 <> C'est <>
 { 
 - age<5:
@@ -618,11 +707,13 @@ Vous allez maintenant suivre la vie de {name}.
 - else :
   {~un accident|la maladie}
 }
-<> qui l'a emportée.
+<> qui l'a emporté{gender=="F":e}.
 
 + [Dommage]
   -> score
 + [Ce fut une belle vie]
+  -> score
++ [Une vie sans histoire]
   -> score
 + [Paix à vous même]
   -> score

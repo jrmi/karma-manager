@@ -26,7 +26,7 @@
               >Vous réincarner</a
             >
           </li>
-          <li v-if="state.currentVariables['karma'] >= 88">
+          <li v-if="state.currentVariables['karma'] >= 42">
             <router-link to="/end"
               >Quitter le cycle des réincarnations</router-link
             >
@@ -36,24 +36,34 @@
     </article>
     <aside>
       <h2>Statut</h2>
-      <p>Karma acquis : {{ state.currentVariables['karma'] }}/88</p>
+      <p>Karma acquis : {{ state.currentVariables['karma'] }}/42</p>
       <p>Réincarnations : {{ state.lifeCount }}</p>
       <p>
-        Richesses : {{ state.currentVariables['rich'] }} %
+        Ressources : {{ state.currentVariables['rich'] }} %
         <br />
-        Education : {{ state.currentVariables['education'] }} %
+        Éducation : {{ state.currentVariables['education'] }} %
         <br />
-        Support : {{ state.currentVariables['support'] }} %
+        Entourage : {{ state.currentVariables['support'] }} %
         <br />
         Sagesse : {{ state.currentVariables['simplicity'] }} %
       </p>
-      <a class="choice grow" href="#" @click.prevent="restart">Recommencer</a>
+      <p>Carrière privilégiée : {{ getWork() }}</p>
+      <!--a class="choice grow" href="#" @click.prevent="restart">Recommencer</a-->
     </aside>
   </div>
 </template>
 
 <script>
 import store from '@/store';
+
+const works = {
+  none: 'Aucune',
+  humanist: 'Intellectuelle',
+  scientist: 'Scientifique',
+  artist: 'Artiste',
+  politician: 'Politicien',
+  activist: 'Militant'
+};
 
 export default {
   name: 'Story',
@@ -87,8 +97,30 @@ export default {
       //await store.actions.loadStory(storyContent);
       await store.actions.goto('arthur');
     },
-    test() {
-      console.log('end');
+    getWork() {
+      const {
+        politician,
+        scientist,
+        artist,
+        activist,
+        humanist
+      } = store.state.currentVariables;
+      const major = {
+        politician,
+        scientist,
+        artist,
+        activist,
+        humanist
+      };
+
+      let maxKey = Object.keys(major).reduce((a, b) =>
+        major[a] > major[b] ? a : b
+      );
+      if (major[maxKey] === 0) {
+        maxKey = 'none';
+      }
+
+      return works[maxKey];
     }
   }
 };

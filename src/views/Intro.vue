@@ -19,7 +19,7 @@
     </p>
     <p>
       À chaque incarnation, vous accumulez du <em>karma</em> en fonction des
-      actions de votre incarnation. Si vous arrivez à totaliser 88 points de
+      actions de votre incarnation. Si vous arrivez à totaliser 42 points de
       karma aux termes de plusieurs incarnations, vous pourrez sortir de votre
       condition d'âme et passer à l'état supérieur.
     </p>
@@ -49,5 +49,6 @@ export default {
 .intro {
   text-align: center;
   width: 100%;
+  /*background: url('../../public/img/cover.svg') no-repeat;*/
 }
 </style>

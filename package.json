@@ -6,7 +6,7 @@
     "start": "npm run serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "deploy": "netlify deploy --prod",
+    "deploy": "npm run build && netlify deploy --prod",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
     "story": "mono $INKLECATE -c -o public/story.json ./src/story.ink"
