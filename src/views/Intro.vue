@@ -1,31 +1,30 @@
 <template>
   <div class="intro">
     <h1>Karma manager v1.2</h1>
-    <p>
-      Chère Âme n°{{ number }}, <br />Bienvenue dans votre application de
-      gestion de réincarnation.
-    </p>
+    <p>Chère Âme n°{{ number }},</p>
+    <p />
+    <p>Bienvenue dans votre application de gestion de réincarnation.</p>
     <p>
       En tant qu'âme, comme vous le savez, vous êtes inscrit dans un cycle de
-      réincarnations. À chaque incarnation, cette application vous permet de
-      guider la vie de celui que vous incarnez&nbsp;: plus les réalisations de
-      la personne seront bonnes, plus vous capitaliserez de points de Karma.
+      réincarnations. Cette application vous permet de guider la vie de celui
+      que vous incarnez&nbsp;: plus ses réalisations seront bonnes, plus vous
+      capitaliserez de points de Karma.
     </p>
     <p>
-      Une fois un niveau de Karma satisfaisant atteint -&nbsp;c'est-à-dire
-      42&nbsp;- vous pouvez quitter le cycle des renaissances et accéder à la «
+      Dès que vous aurez atteint un niveau de Karma suffisant -&nbsp;à savoir
+      42&nbsp;- vous pourrez quitter le cycle des renaissances et accéder à la «
       libération », « nirvana » ou encore « Moksha », appelez ça comme vous le
       souhaitez.
     </p>
     <p>
-      À chaque fois, avant de vous incarner, Karma manager v1.2 vous offre la
-      possibilité de choisir la famille qui vous convient le mieux. Attention,
-      comme dans les photomatons, vous n'avez droit qu'a trois possibilités. Ne
-      soyez pas trop exigeant, mais faites le bon choix.
+      Avant chaque incarnation, Karma manager v1.2 vous offre la possibilité de
+      choisir votre famille. Attention, comme dans les photomatons, vous n'avez
+      droit qu'a trois possibilités.
     </p>
     <p>
-      Ensuite, vous interviendrez dans certains choix de vie de votre
-      incarnation afin d'orienter les actions qu'elle pourra réaliser.
+      Ensuite, cette application vous permet d'intervenir dans certains choix de
+      vie de votre incarnation, et ce afin d'orienter les actions qu'elle pourra
+      ensuite réaliser.
     </p>
     <h3>
       Karma manager v1.2 compte sur vous pour rendre le monde meilleur et vous

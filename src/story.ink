@@ -324,8 +324,8 @@ C'est une occasion ratée, mais la prochaine sera sans doute la bonne.
 
 {test((education+rich)/2 + activist) : 
   À l'âge de {age} ans, {name} aurait pu mener à bien une action militante.
-  <> Cependant, il eût fallu avoir un peu d'argent de côté, ce qui n'était pas son cas (Richesses {rich}%).
-  <> De plus, son CV n'aurait pas été sélectionné, faute d'un cursus suffisant. (Education {education}%).
+  <> Cependant, il eût fallu avoir un peu d'argent de côté, ce qui n'était pas son cas (Richesses {rich}%)
+  <> et, de toutes façons, son CV n'aurait pas été sélectionné, faute d'un cursus suffisant. (Education {education}%).
  -> action.failAction
 }
 
@@ -356,7 +356,7 @@ C'est une occasion ratée, mais la prochaine sera sans doute la bonne.
 {test((support+rich)/2 + politician):  
   À l'âge de {age} ans, {name} aurait pu embrasser une carrière politique.
   <> Cependant, il eût fallu avoir un peu d'argent de côté, ce qui n'était pas son cas (Richesses {rich}%).
-  <> De plus elle n'a pas pu rencontrer les bonnes personnes au bon moment (Entourage {support}%).
+  <> De plus {gender=="F":elle|il} n'a pas pu rencontrer les bonnes personnes au bon moment (Entourage {support}%).
  -> action.failAction
 }
 
@@ -393,8 +393,8 @@ C'est une occasion ratée, mais la prochaine sera sans doute la bonne.
 
 {test((support+simplicity)/2 + humanist):  
   À l'âge de {age} ans, {name} aurait pu s'engager dans une action humanitaire.
-  <> Malheureusement elle n'a pas pu rencontrer les bonnes personnes (Entourage {support}%). 
-  <> Par ailleurs, ce type d'engagement demande une ouverture d'esprit qu'elle n'avait pas (Sagesse {simplicity}%)
+  <> Malheureusement {gender=="F":elle|il} n'a pas pu rencontrer les bonnes personnes (Entourage {support}%). 
+  <> Par ailleurs, ce type d'engagement demande une ouverture d'esprit qu'{gender=="F":elle|il} n'avait pas (Sagesse {simplicity}%).
  -> action.failAction
 }
 
@@ -440,8 +440,8 @@ C'est une occasion ratée, mais la prochaine sera sans doute la bonne.
 
 {test((simplicity + education) / 2 + artist): 
   À l'âge de {age} ans, les projets artistiques de {name} échouent.
-  <> Si seulement {gender=="F":elle|il} avait accepté de suivre la formation de dessin du coin de la rue (Education {education}%).
-  <> Mais cela lui aurait demandé de sortir de sa zone de confort (Sagesse {simplicity}%).
+  <> Si seulement {gender=="F":elle|il} avait accepté de suivre la formation de dessin du coin de la rue (Education {education}%),
+  <> mais cela lui aurait en plus demandé de sortir de sa zone de confort (Sagesse {simplicity}%).
   -> action.failAction
 }
 
@@ -462,7 +462,7 @@ C'est une occasion ratée, mais la prochaine sera sans doute la bonne.
 {debug: <> --science}
 
 {test((support + education) / 2 + scientist): 
-  À l'âge de {age} ans, {name} aurait pu innover dans son domaine scientifique.
+  À l'âge de {age} ans, {name} aurait pu innover dans un domaine scientifique.
   <> Dommage qu'{gender=="F":elle|il} ait séché un peu trop souvent lors de sa formation (Education {education}%).
   <> De plus, la recherche demande d'avoir un réseaux social développé, et pas seulement pour les soirées (Entourage {support}%).
  -> action.failAction
@@ -591,7 +591,8 @@ C'est une occasion ratée, mais la prochaine sera sans doute la bonne.
 À l'âge de {age} ans, {name} peut se présenter à la mairie de sa commune.
 
 + [D'accord pour agir pour sa commune] 
-  Sa carrière politique progresse mais cela fait perdre de vue les groupes plus alternatifs.
+  Bonne nouvelle, sa carrière politique progresse. 
+  <> En contrepartie, sa participation à des groupes plus alternatifs est vue d'un mauvais œil.
   {alter(activist, -20)} {alter(politician, 20)}
   ++ [Ok]
 + [Non merci]
@@ -677,7 +678,7 @@ C'est une occasion ratée, mais la prochaine sera sans doute la bonne.
 
 + [Bonne idée] 
   La sagesse de {name} augmente (+10%) mais sa retraite loin de tous lui fait perdre de vue plusieurs de ses amis proches (Entourage -5%). 
-  <> Avec un regard plus distancié sur le monde {gender=="F":elle|il} se deleste de certaines possesions matérielles (Ressources -5%).
+  <> Avec un regard plus distancié sur le monde {gender=="F":elle|il} se déleste de certaines possesions matérielles (Ressources -5%).
   {alter(simplicity, 10)} {alter(support, -5)} {alter(rich, -5)}
   ++ [Ok]
 + [Non merci]
@@ -697,6 +698,7 @@ C'est une occasion ratée, mais la prochaine sera sans doute la bonne.
 {name} meurt à l'âge de {age} ans
 
 { shuffle:
+  - <>. Cause de la mort : chute d'un piano du 4ème étage.
   - <>. Cause de la mort : présence d'un nénuphar dans les poumons.
   - <> d'une mort aussi grotesque que tragique en s'étouffant alors qu'{gender=="F":elle|il} avalait un bretzel.
   - <>. Cause de la mort : l'horloge mécanique qui remplaçait son cœur s'est arrétée.
@@ -705,7 +707,6 @@ C'est une occasion ratée, mais la prochaine sera sans doute la bonne.
   - <>. Cause de la mort : lors d'un selfie {~en haut d'une falaise|en haut d'une tour|près d'un {~lion|serpent|éléphant}|au milieu d'une autoroute}.
   - <> lors d'une représentation du Malade imaginaire de Molière.
   - <> en changeant une ampoule alors qu'{gender=="F":elle|il} était dans son bain.
-  - <>. Cause de la mort : chute d'un piano du 4ème étage.
   - <>. Cause de la mort : chute d'une tortue nommée Eschyle sur sa tête.
   - <> en testant son invention {~du costume parachute|du gilet pare-balles sexy|du taser anti-émeutes}.
   - <> en s'approchant trop près d'une éruption volcanique.
