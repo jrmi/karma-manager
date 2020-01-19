@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Intro from './views/Intro.vue';
 import End from './views/End.vue';
+import Cover from './views/Cover.vue';
 
 Vue.use(Router);
 
@@ -10,6 +11,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'cover',
+      component: Cover
+    },
+    {
+      path: '/intro',
       name: 'intro',
       component: Intro
     },

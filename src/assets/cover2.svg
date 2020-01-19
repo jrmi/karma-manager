@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="svg2"
+   width="100"
+   height="100"
+   viewBox="0 0 100 100"
+   sodipodi:docname="cover2.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:export-filename="/home/jeremie/Code/ink-story/public/img/icons/favicon-32x32.png"
+   inkscape:export-xdpi="30.719999"
+   inkscape:export-ydpi="30.719999">
+  <metadata
+     id="metadata8">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs6" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1243"
+     inkscape:window-height="778"
+     id="namedview4"
+     showgrid="false"
+     inkscape:zoom="2.2073323"
+     inkscape:cx="9.3546324"
+     inkscape:cy="87.647117"
+     inkscape:window-x="1579"
+     inkscape:window-y="128"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2" />
+  <rect
+     style="opacity:1;fill:#191919;fill-opacity:1;stroke:none;stroke-width:1.99999988;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+     id="rect821"
+     width="101.70647"
+     height="101.93299"
+     x="-102.61255"
+     y="-110.84939" />
+  <path
+     style="fill:#fc2f70;stroke-width:1;fill-opacity:0.94117647"
+     d="M 16.213533,79.578539 C 11.701206,78.592422 7.6682651,75.798097 4.980942,71.795772 2.7765308,68.512662 1.9199617,65.125653 1.6550374,58.644641 1.5915158,57.090857 1.5165943,55.425046 1.4885263,54.942837 1.4604583,54.460629 1.3865514,52.663309 1.3242989,50.94879 1.2620502,49.23427 1.176659,47.436951 1.1345595,46.954742 0.97855464,45.167853 0.78036084,38.975168 0.79160694,36.239007 0.79967318,34.276013 0.89490522,33.005934 1.1036898,32.076855 2.4280881,26.183305 5.7902416,22.070768 10.73593,20.294839 c 3.327784,-1.19496 8.770772,-1.338164 12.943905,-0.34055 10.265331,2.453992 19.016669,9.909279 23.874209,20.338499 l 0.579222,1.243602 1.123179,-1.523924 c 1.713976,-2.325517 2.469962,-3.227228 5.454996,-6.506504 6.995906,-7.685507 13.769331,-12.928057 19.258247,-14.905652 4.109834,-0.831149 8.699975,-1.540925 12.539781,-0.104495 1.532652,0.573354 3.722556,1.789643 4.878419,2.709514 1.070037,0.851563 3.624777,3.78024 4.361452,4.999844 0.633994,1.049597 1.237979,2.414265 1.810858,4.091463 0.329392,0.964388 0.707296,3.03028 0.819694,4.481127 0.0581,0.750101 0.141008,1.758355 0.1842,2.240563 0.04323,0.482208 0.132047,2.367203 0.197421,4.188879 0.06541,1.821676 0.137479,3.70667 0.160228,4.188879 0.02281,0.482208 0.09453,2.323365 0.159561,4.091461 0.06503,1.768101 0.149339,3.524272 0.187426,3.902605 0.220297,2.188439 0.293334,9.384107 0.10839,10.682173 -0.710408,4.987138 -3.279191,9.277021 -6.916322,11.550288 -5.043365,3.152227 -13.104309,3.289804 -20.377785,0.347786 C 61.864064,70.428788 56.825603,64.495635 52.157876,55.916988 c -0.04275,0 -0.658226,0.767154 -1.367668,1.70478 -2.062133,2.725394 -2.229024,2.925196 -4.927696,5.899338 -2.558753,2.819944 -4.189048,4.468077 -6.377095,6.446854 -0.63328,0.572709 -1.191276,1.090976 -1.239991,1.151688 -0.04871,0.06072 -0.367569,0.322469 -0.708565,0.581672 -0.340998,0.259209 -0.739566,0.599684 -0.885709,0.75662 -0.146141,0.156935 -1.295735,1.022575 -2.554651,1.923647 -4.059108,2.905305 -7.43781,4.547182 -10.706246,5.202674 -1.815082,0.364025 -5.498266,0.361082 -7.176722,-0.0054 z m 57.98204,-18.91435 c 5.755523,-1.05623 11.958704,-4.333398 16.757271,-8.852951 1.415321,-1.33303 3.2643,-3.433122 3.409701,-3.872788 0.07619,-0.230365 -1.945621,-2.190004 -3.397534,-3.293043 -3.220105,-2.446383 -6.756165,-4.040072 -10.648472,-4.799229 -0.292277,-0.057 -1.368412,-0.158684 -2.391401,-0.225949 -5.910435,-0.388625 -12.141906,1.979562 -17.271309,6.56372 -2.095396,1.872662 -6.656281,7.015982 -6.631728,7.478608 0.01599,0.301335 2.225215,2.347214 3.740071,3.463543 4.646561,3.424147 10.356004,4.653381 16.433401,3.538089 z M 26.376945,57.572846 c 1.558588,-0.208691 2.055124,-0.320788 3.54283,-0.799848 2.111974,-0.680074 2.33096,-0.775163 4.517109,-1.961361 3.585078,-1.945256 6.051503,-4.12532 10.320325,-9.122088 L 46.397598,43.769427 45.9972,43.294154 c -0.564062,-0.669541 -2.713466,-2.568863 -3.766089,-3.327907 -6.738089,-4.85883 -16.013082,-4.93543 -24.799813,-0.204817 -2.255168,1.214143 -2.64258,1.447931 -4.171036,2.517072 -2.750756,2.148499 -5.3425875,4.421269 -7.4388292,7.175038 1.3569166,1.483373 3.0164433,2.880978 4.1699218,3.714667 3.5302384,2.544811 7.6122764,4.143701 11.3370574,4.440599 0.779422,0.06214 1.440182,0.134078 1.468354,0.159891 0.07542,0.06911 2.655503,-0.07204 3.580179,-0.195851 z"
+     id="path817"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cssccscsssscsscccccccccccscccsscccscccccccccsscscccsscssscccccc" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.52513695px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#f9f9f9;fill-opacity:1;stroke:none;stroke-width:1"
+     x="48.266479"
+     y="10.702654"
+     id="text844"><tspan
+       sodipodi:role="line"
+       id="tspan842"
+       x="48.266476"
+       y="10.702654"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.52513695px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#f9f9f9;stroke-width:1">Karma manager</tspan><tspan
+       sodipodi:role="line"
+       x="48.266479"
+       y="22.609076"
+       id="tspan846"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.52513695px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#f9f9f9;stroke-width:1">v1.2</tspan></text>
+</svg>
